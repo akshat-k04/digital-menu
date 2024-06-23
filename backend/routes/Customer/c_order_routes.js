@@ -26,7 +26,7 @@ const authenticateJWT = (req, res, next) => {
 
 
 OrderRouter.post('/update',authenticateJWT, update_order); // used by owner to complete the order if the user did't tap on complete order
-OrderRouter.post('find', find_order);
+OrderRouter.post('/find', find_order);
 
 
 async function update_order(req, res) {

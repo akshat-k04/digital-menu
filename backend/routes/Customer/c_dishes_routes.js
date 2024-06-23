@@ -9,9 +9,6 @@ const DishesRouter = express.Router();
 DishesRouter.get('/', get_dish);
 
 
-
-
-
 async function get_dish(req, res) {
     let data = await DishesModel.find({});
     res.send(data);

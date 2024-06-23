@@ -1,4 +1,3 @@
-
 const TableBooking = require('./TablesSchedule.js');
 const Dishes = require('./Dish_routes.js') ;
 const Tables = require('./TableRegistrationRoute.js');
@@ -11,7 +10,7 @@ const AdminRouter = express.Router();
 AdminRouter.use('/tableRegistration',Tables) ;
 AdminRouter.use('/dishes', Dishes);
 AdminRouter.use('/table', TableBooking);
-AdminRouter.use('employee',Employee) ;
+AdminRouter.use('/employee',Employee) ;
 
 
 

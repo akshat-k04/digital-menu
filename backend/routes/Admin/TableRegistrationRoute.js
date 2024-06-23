@@ -1,3 +1,6 @@
+// create update table for pin code and order id 
+
+
 const mongoose = require('mongoose');
 const Table_registration_model = require('./../../models/table_register_model.js') ;
 const jwt = require('jsonwebtoken');
@@ -35,7 +38,7 @@ Table_registration_Route.get('/', get_table);
 
 async function add_table(req, res) {
     try {
-        await Table_registration_model.create(req.body);
+        await Table_registration_Route.create(req.body);
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
@@ -43,7 +46,7 @@ async function add_table(req, res) {
 }
 async function delete_table(req, res) {
     try {
-        await Table_registration_model.findOneAndDelete({ id: req.body.id });
+        await Table_registration_Route.findOneAndDelete({ id: req.body.id });
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
@@ -51,11 +54,11 @@ async function delete_table(req, res) {
 }
 async function get_table(req, res) {
     try {
-        let data = await Table_registration_model.find({});
+        let data = await Table_registration_Route.find({});
         res.send(data);
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
     }
 }
 
-module.exports = Table_registration_model;
+module.exports = Table_registration_Route;
