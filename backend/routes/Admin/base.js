@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+
 const TableBooking = require('./TablesSchedule.js');
 const Dishes = require('./Dish_routes.js') ;
 const Tables = require('./TableRegistrationRoute.js');

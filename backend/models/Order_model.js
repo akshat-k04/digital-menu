@@ -36,6 +36,9 @@ const OrderSchema = mongoose.Schema({
     },
     items:{
         type:[Item]
+    },
+    completed:{
+        type:Boolean
     }
 });
 
