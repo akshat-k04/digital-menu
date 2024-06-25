@@ -43,7 +43,7 @@ async function add_table(req, res) {
 }
 async function delete_table(req, res) {
     try {
-        await Table_registration_model.findOneAndDelete({ id: req.body.id });
+        await Table_registration_model.findOneAndDelete({ _id: req.body.id });
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });

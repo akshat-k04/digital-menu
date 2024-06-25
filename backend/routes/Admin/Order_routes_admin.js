@@ -30,7 +30,7 @@ OrderRouter.get('/', get_orders);
 
 async function update_order(req, res) {
     try {
-        await OrderModel.findOneAndUpdate({ id: req.body.id }, req.body);
+        await OrderModel.findOneAndUpdate({ _id: req.body.id }, req.body);
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
@@ -38,7 +38,7 @@ async function update_order(req, res) {
 }
 async function find_order(req, res) {
     try {
-        await OrderModel.findOne({ order_id: req.body.order_id }, req.body);
+        await OrderModel.findOne({ _id: req.body.order_id }, req.body);
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
