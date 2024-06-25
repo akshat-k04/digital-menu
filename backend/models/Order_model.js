@@ -1,48 +1,33 @@
-const { type } = require('@testing-library/user-event/dist/type');
-const mongoose = require('mongoose');
-
-// Define the TableBooking schema
-
-const Item = mongoose.Schema({
-    dish_id:{
-        type:String,
-        unique:true,
-    },
-    name:{
-        type: String,
-    },
-    quantity:{
-        type: String,
-    },
-    added_time:{
-        type: String,
-    },
-    status:{
-        type:String
-    }
-})
+const { type } = require("@testing-library/user-event/dist/type");
+const mongoose = require("mongoose");
 
 const OrderSchema = mongoose.Schema({
-    order_id: {
-        type: String,
+  amount: {
+    type: String,
+  },
+  Tax: {
+    type: String,
+  },
+  items: [
+    {
+      menuItem: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Dishes",
         required: true,
-        unique:true
+      },
+      quantity: { type: Number, required: true },
+      specialInstructions: { type: String },
     },
-    amount: {
-        type: String,
-    },
-    Tax:{
-        type: String 
-    },
-    items:{
-        type:[Item]
-    },
-    completed:{
-        type:Boolean
-    }
+  ],
+  status: {
+    type: String,
+    enum: ["Placed", "Preparing", "Ready", "Served"],
+    default: "Placed",
+  },
+  createdAt: { type: Date, default: Date.now },
 });
 
 // Create a model
-const TableBookingModel = mongoose.model('TableBooking', OrderSchema);
+const TableBookingModel = mongoose.model("TableBooking", OrderSchema);
 
 module.exports = TableBookingModel;

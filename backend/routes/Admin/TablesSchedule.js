@@ -39,7 +39,7 @@ async function add_booking(req, res) {
 
 async function update_booking(req, res) {
     try {
-        await TableBookingModel.findOneAndUpdate({ id: req.body.id }, req.body);
+        await TableBookingModel.findOneAndUpdate({ _id: req.body.id }, req.body);
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
@@ -48,7 +48,7 @@ async function update_booking(req, res) {
 
 async function delete_booking(req, res) {
     try {
-        await TableBookingModel.findOneAndDelete({ id: req.body.id });
+        await TableBookingModel.findOneAndDelete({ _id: req.body.id });
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });

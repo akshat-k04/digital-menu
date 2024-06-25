@@ -57,7 +57,7 @@ async function add_employee(req, res) {
 }
 async function delete_employee(req, res) {
     try {
-        await restaurant_detail.findOneAndDelete({ id: req.body.id });
+        await restaurant_detail.findOneAndDelete({ _id: req.body.id });
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
