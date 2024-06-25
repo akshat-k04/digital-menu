@@ -7,9 +7,6 @@ const restaurant_detail = mongoose.Schema({
         required: true,
         unique: true
     },
-    Total_tables: {
-        type: Number
-    },
     password: {
         type: String,
         required: true,

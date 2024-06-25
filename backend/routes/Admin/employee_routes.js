@@ -2,51 +2,55 @@ const mongoose = require('mongoose');
 const restaurant_detail = require('../../models/restaurant_model.js');
 const jwt = require('jsonwebtoken');
 const express = require('express');
-
+const bcrypt = require('bcrypt') ;
 
 const Employee_crud_router = express.Router();
 
-const authenticateJWT = (req, res, next) => {
-    const authHeader = req.header('token');
 
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
 
-        jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
-            if (err|| user.is_employee) {
-                res.send({"message":"error"}) ;
-                return res.sendStatus(403); // Forbidden
-            }
-            console.log("Verified");
-            next();
-        });
-    } else {
-        res.send({ "message": "error" });
-        res.sendStatus(401); // Unauthorized
+const verifyToken = (req, res, next) => {
+    const token = req.headers['token']?.split(' ')[1];
+    if (!token) {
+        return res.status(401).send('Access Denied: No Token Provided');
+    }
+
+    try {
+        const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        req.user = verified;
+        next();
+    } catch (err) {
+        res.status(400).send('Invalid Token');
     }
 };
 
+
 Employee_crud_router.post('/Signin',signin) ;
-Employee_crud_router.post('/add', authenticateJWT, add_employee);
-Employee_crud_router.post('/delete', authenticateJWT, delete_employee);
-Employee_crud_router.get('/', authenticateJWT, get_employee);
-
-
+Employee_crud_router.post('/add', verifyToken, add_employee);
+Employee_crud_router.post('/delete', verifyToken, delete_employee);
+Employee_crud_router.get('/', verifyToken, get_employee);
+Employee_crud_router.post('/verifyToken', verifyToken, (req, res) => { res.status(200).json({ message: 'Token is valid', user: req.user }) ;});
 
 async function signin(req, res) {
     const { username, password } = req.body;
-
-    const restaurant_data = await restaurant_detail.findOne({ username });
-    if (restaurant_data && await bcrypt.compare(password, restaurant_data.password)) {
-        const token = jwt.sign({ username: restaurant_data.username, is_employee: restaurant_data.is_employee }, process.env.JWT_SECRET_KEY, { expiresIn: '23h' });
-        res.json({ 'token': token, Total_tables: restaurant_data.Total_tables });
-    } else {
-        res.status(401).send('Invalid credentials');
+    try {
+        const restaurant_data = await restaurant_detail.findOne({ username });
+        if (restaurant_data && await bcrypt.compare(password, restaurant_data.password)) {
+            const token = jwt.sign(
+                { username: restaurant_data.username, is_employee: restaurant_data.is_employee },
+                process.env.JWT_SECRET_KEY,
+                { expiresIn: '23h' }
+            );
+            res.json({ 'token': token });
+        } else {
+            res.status(401).send('Invalid credentials');
+        }
+    } catch (error) {
+        res.status(500).send('Server error');
     }
 }
 async function add_employee(req, res) {
     try {
-        req.body.is_employee = false ;
+        req.body.is_employee = true ;
         const salt = await bcrypt.genSalt(10);
         req.body.password = await bcrypt.hash(req.body.password, salt);
         await restaurant_detail.create(req.body);

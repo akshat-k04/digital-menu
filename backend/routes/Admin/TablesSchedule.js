@@ -64,4 +64,8 @@ async function get_bookings(req, res) {
     }
 }
 
+async function Order(req,res){
+    
+}
+
 module.exports = TableBookingRouter;
