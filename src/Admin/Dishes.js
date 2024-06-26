@@ -1,58 +1,61 @@
-import React, { useState } from "react";
+import React, { useState ,useContext} from "react";
 import CreateDish from "./CreateDish";
+import { Dishes_context } from "../Context/Dishes_context";
 
 function Dishes() {
-  const dishes = [
-    {
-      name: "Pasta Carbonara",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      catagory: "Italian",
-      price: 12.99,
-    },
-    {
-      name: "Sushi Platter",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      catagory: "Japanese",
-      price: 18.5,
-    },
-    {
-      name: "Chicken Tikka Masala",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      catagory: "Indian",
-      price: 15.0,
-    },
-    {
-      name: "Beef Tacos",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      catagory: "Mexican",
-      price: 10.5,
-    },
-    {
-      name: "Vegan Burger",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      catagory: "Vegan",
-      price: 11.99,
-    },
-    {
-      name: "Margherita Pizza",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      catagory: "Italian",
-      price: 14.0,
-    },
-    {
-      name: "Pad Thai",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      catagory: "Thai",
-      price: 13.25,
-    },
-  ];
+  const { Dishes_data } = useContext(Dishes_context);
+  
+  // const dishes = [
+  //   {
+  //     name: "Pasta Carbonara",
+  //     image_url:
+  //       "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     catagory: "Italian",
+  //     price: 12.99,
+  //   },
+  //   {
+  //     name: "Sushi Platter",
+  //     image_url:
+  //       "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     catagory: "Japanese",
+  //     price: 18.5,
+  //   },
+  //   {
+  //     name: "Chicken Tikka Masala",
+  //     image_url:
+  //       "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     catagory: "Indian",
+  //     price: 15.0,
+  //   },
+  //   {
+  //     name: "Beef Tacos",
+  //     image_url:
+  //       "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     catagory: "Mexican",
+  //     price: 10.5,
+  //   },
+  //   {
+  //     name: "Vegan Burger",
+  //     image_url:
+  //       "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     catagory: "Vegan",
+  //     price: 11.99,
+  //   },
+  //   {
+  //     name: "Margherita Pizza",
+  //     image_url:
+  //       "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     catagory: "Italian",
+  //     price: 14.0,
+  //   },
+  //   {
+  //     name: "Pad Thai",
+  //     image_url:
+  //       "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     catagory: "Thai",
+  //     price: 13.25,
+  //   },
+  // ];
 
   const [Create, setCreate] = useState(false);
   return (
@@ -83,7 +86,7 @@ function Dishes() {
               </tr>
             </thead>
             <tbody>
-              {dishes.map((dish, index) => (
+              {Dishes_data.map((dish, index) => (
                 <tr key={index}>
                   <td className="w-1/4 text-center">{dish.name}</td>
                   <td className="w-1/4 text-center">{dish.catagory}</td>

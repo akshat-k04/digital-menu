@@ -1,20 +1,22 @@
 // src/Dishes.js
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import CreateRestaurantDetail from './CreateRestaurantDetail';
+import { employee_context } from '../Context/employee_context';
 
 function Employee() {
-  const [restaurantDetails, setRestaurantDetails] = useState([
-    {
-      username: 'admin1',
-      password: 'password1',
-      is_employee: true
-    },
-    {
-      username: 'user2',
-      password: 'password2',
-      is_employee: false
-    }
-  ]);
+  const { employee_data } = useContext(employee_context);
+  // const [restaurantDetails, setRestaurantDetails] = useState([
+  //   {
+  //     username: 'admin1',
+  //     password: 'password1',
+  //     is_employee: true
+  //   },
+  //   {
+  //     username: 'user2',
+  //     password: 'password2',
+  //     is_employee: false
+  //   }
+  // ]);
 
   const [create, setCreate] = useState(false);
 
@@ -47,7 +49,7 @@ function Employee() {
               </tr>
             </thead>
             <tbody>
-              {restaurantDetails.map((detail, index) => (
+              {employee_data.map((detail, index) => (
                 <tr key={index} className="bg-white border-b">
                   <td className="w-1/3 text-center py-2">{detail.username}</td>
                   <td className="w-1/3 text-center py-2">{detail.password}</td>

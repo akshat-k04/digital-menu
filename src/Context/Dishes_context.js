@@ -1,39 +1,38 @@
 import React, { createContext, useState } from 'react';
-const baseURL = process.env.REACT_APP_API_BASE_URL;
+const base = "http://localhost:8000";
 
-const ChapterContext = createContext();
+const Dishes_context = createContext();
 
-const ChapterProvider = ({ children }) => {
-    const [chapter_global, setC] = useState({});
+const Dishes_provider = ({ children }) => {
+    const [Dishes_data, set_Dishes] = useState({});
 
-    function updateChapter(temp_chapter) {
-        console.log("context is running");
-        setChapter(temp_chapter);
-        if (temp_chapter == null) {
-            console.log("bach gaya bhai data");
+    const get_Dishes = async () => {
+        try {
+            const response = await fetch(`${base}/admin/dishes/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // body: JSON.stringify(data_to_send),
+            });
+
+
+
+            const data = await response.json();
+            console.log(data);
+
+            set_Dishes(data) 
         }
-        fetch(`${baseURL}/api/chapters`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(temp_chapter),
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error('Error:', error));
-    }
-
-    function setChapter(temp) {
-        setC(temp);
-        console.log(temp);
+        catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     return (
-        <ChapterContext.Provider value={{ chapter_global, updateChapter, setChapter }}>
+        <Dishes_context.Provider value={{ Dishes_data, set_Dishes,get_Dishes }}>
             {children}
-        </ChapterContext.Provider>
+        </Dishes_context.Provider>
     );
 };
 
-export { ChapterContext, ChapterProvider };
+export { Dishes_context, Dishes_provider };

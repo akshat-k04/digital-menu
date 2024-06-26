@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import CreateTableRegistration from "./CreateTableRegistration";
+import { Table_registration_context } from "../Context/Table_registration";
 
 function TableRegisteration() {
-  const [tables, setTables] = useState([
-    {
-      table_number: 1,
-      pincode: "123456",
-      order_id: "order1",
-    },
-    {
-      table_number: 2,
-      pincode: "654321",
-      order_id: "order2",
-    },
-  ]);
+
+  const { Table_registration_data } = useContext(Table_registration_context);
+  // const [tables, setTables] = useState([
+  //   {
+  //     table_number: 1,
+  //     pincode: "123456",
+  //     order_id: "order1",
+  //   },
+  //   {
+  //     table_number: 2,
+  //     pincode: "654321",
+  //     order_id: "order2",
+  //   },
+  // ]);
 
   const [create, setCreate] = useState(false);
 
@@ -44,7 +47,7 @@ function TableRegisteration() {
               </tr>
             </thead>
             <tbody>
-              {tables.map((table, index) => (
+              {Table_registration_data.map((table, index) => (
                 <tr key={index} className="bg-white border-b">
                   <td className="w-1/3 text-center py-2">
                     {table.table_number}

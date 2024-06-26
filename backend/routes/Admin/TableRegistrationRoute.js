@@ -38,7 +38,7 @@ Table_registration_Route.get('/', get_table);
 
 async function add_table(req, res) {
     try {
-        await Table_registration_Route.create(req.body);
+        await Table_registration_model.create(req.body);
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
@@ -54,7 +54,7 @@ async function delete_table(req, res) {
 }
 async function get_table(req, res) {
     try {
-        let data = await Table_registration_Route.find({});
+        let data = await Table_registration_model.find({});
         res.send(data);
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
