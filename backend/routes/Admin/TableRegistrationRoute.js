@@ -32,7 +32,7 @@ const authenticateJWT = (req, res, next) => {
 Table_registration_Route.post('/add', authenticateJWT, add_table);
 Table_registration_Route.post('/delete', authenticateJWT, delete_table);
 Table_registration_Route.get('/', get_table);
-
+Table_registration_Route.post('/update', authenticateJWT, update_table);
 
 
 
@@ -47,6 +47,14 @@ async function add_table(req, res) {
 async function delete_table(req, res) {
     try {
         await Table_registration_model.findOneAndDelete({ _id: req.body.id });
+        res.send({ 'message': 'done' });
+    } catch (err) {
+        res.status(500).send({ 'message': `${err}` });
+    }
+}
+async function update_table(req, res) {
+    try {
+        await Table_registration_model.findOneAndUpdate({ _id: req.body.id },req.body);
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });

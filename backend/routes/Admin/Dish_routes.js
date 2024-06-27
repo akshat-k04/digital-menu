@@ -46,7 +46,8 @@ async function add_dish(req, res) {
 async function update_dish(req, res) {
     try {
         //delete the image from the database also
-        await DishesModel.findOneAndUpdate({ "id": req.body.id }, req.body);
+        console.log(req.body.updated_dish._id) ;
+        await DishesModel.findOneAndUpdate({ "_id": req.body.updated_dish._id }, req.body.updated_dish);
         res.send({ 'message': 'done' });// run only when the above line run without any error
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
@@ -56,7 +57,7 @@ async function update_dish(req, res) {
 async function delete_dish(req, res) {
     try {
         //delete the image from database also
-        await DishesModel.findOneAndDelete({ "id": req.body.id });
+        await DishesModel.findOneAndDelete({ "_id": req.body.deleted_dish._id });
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });

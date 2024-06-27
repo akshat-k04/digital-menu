@@ -6,7 +6,7 @@ import { Employee_provider } from "./Context/employee_context";
 import { Dishes_provider } from "./Context/Dishes_context";
 import { Table_registration_provider } from "./Context/Table_registration";
 import { Table_schedule_provider } from "./Context/Table_schedule_context";
-import Order from "./customer/Order";
+import Order from "./Customer/Order.js";
 const base = "http://localhost:8000";
 
 function App() {

@@ -27,9 +27,42 @@ const Dishes_provider = ({ children }) => {
             console.error('Error:', error);
         }
     }
-
+    const update_Dishes = async (updated_dish) => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`${base}/admin/dishes/update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `Bearer ${token}`
+                },
+                body: JSON.stringify({ updated_dish }),
+            });
+            const data = await response.json();
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    const delete_Dishes = async (deleted_dish) => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`${base}/admin/dishes/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `Bearer ${token}`
+                },
+                body: JSON.stringify({ deleted_dish }),
+            });
+            const data = await response.json();
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
+    }
     return (
-        <Dishes_context.Provider value={{ Dishes_data, set_Dishes,get_Dishes }}>
+        <Dishes_context.Provider value={{ Dishes_data, set_Dishes,get_Dishes,update_Dishes ,delete_Dishes}}>
             {children}
         </Dishes_context.Provider>
     );
