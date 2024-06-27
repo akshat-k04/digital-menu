@@ -21,7 +21,7 @@ const Table_schedule_provider = ({ children }) => {
 
 
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
 
             set_Table_schedule(data)
         }

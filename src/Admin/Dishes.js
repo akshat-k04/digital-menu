@@ -1,10 +1,10 @@
-import React, { useState ,useContext} from "react";
+import React, { useState, useContext } from "react";
 import CreateDish from "./CreateDish";
 import { Dishes_context } from "../Context/Dishes_context";
 
 function Dishes() {
   const { Dishes_data } = useContext(Dishes_context);
-  
+  console.log(Dishes_data);
   // const dishes = [
   //   {
   //     name: "Pasta Carbonara",
