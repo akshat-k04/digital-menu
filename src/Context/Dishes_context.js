@@ -19,7 +19,7 @@ const Dishes_provider = ({ children }) => {
 
 
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
 
             set_Dishes(data) 
         }
