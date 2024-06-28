@@ -6,7 +6,8 @@ import { Employee_provider } from "./Context/employee_context";
 import { Dishes_provider } from "./Context/Dishes_context";
 import { Table_registration_provider } from "./Context/Table_registration";
 import { Table_schedule_provider } from "./Context/Table_schedule_context";
-import Order from "./Customer/Order.js";
+import Order from "./customer/Order.js";
+import Cart from "./customer/Cart.js";
 const base = "http://localhost:8000";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/" element={<Admin_login />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/Order" element={<Order />} />
+                    <Route path="/cart"element={<Cart />} />
                   </Routes>
                 </div>
               </Router>
