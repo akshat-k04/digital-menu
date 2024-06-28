@@ -30,7 +30,9 @@ TableBookingRouter.use('/order',Order) ;
 
 async function add_booking(req, res) {
     try {
-        await TableBookingModel.create(req.body);
+        for (let e=0 ;e<req.body.size() ; e++){
+            await TableBookingModel.create(req.body[i]);
+        }
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });

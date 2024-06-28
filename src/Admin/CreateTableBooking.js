@@ -1,15 +1,15 @@
 // src/CreateTableBooking.js
-import React, { useState } from "react";
+import React, { useState ,useContext} from "react";
+import { Table_schedule_context } from "../Context/Table_schedule_context";
 
 const CreateTableBooking = () => {
+  const { Table_schedule_data, set_Table_schedule, get_table_schedule, update_Table_schedule, create_Table_schedule, delete_Table_schedule } = useContext(Table_schedule_context) ;
   const [tableBooking, setTableBooking] = useState({
     table_number: "",
-    pincode: "",
     date: "",
     time: "",
     customer_name: "",
     customer_contact: "",
-    order_id: "",
   });
 
   const handleChange = (e) => {
@@ -20,17 +20,18 @@ const CreateTableBooking = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     //api to be integrated
     e.preventDefault();
+    await create_Table_schedule(tableBooking) ;
+    window.location.href = "/dashboard";
     setTableBooking({
       table_number: "",
-      pincode: "",
       date: "",
       time: "",
       customer_name: "",
       customer_contact: "",
-      order_id: "",
+
     });
   };
 
@@ -56,20 +57,7 @@ const CreateTableBooking = () => {
           required
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="pincode" className="block text-gray-700 font-bold mb-2">
-          Pincode:
-        </label>
-        <input
-          type="text"
-          id="pincode"
-          name="pincode"
-          value={tableBooking.pincode}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 rounded"
-          required
-        />
-      </div>
+
       <div className="mb-4">
         <label htmlFor="date" className="block text-gray-700 font-bold mb-2">
           Date:
@@ -127,22 +115,6 @@ const CreateTableBooking = () => {
           id="customer_contact"
           name="customer_contact"
           value={tableBooking.customer_contact}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="order_id"
-          className="block text-gray-700 font-bold mb-2"
-        >
-          Order ID:
-        </label>
-        <input
-          type="text"
-          id="order_id"
-          name="order_id"
-          value={tableBooking.order_id}
           onChange={handleChange}
           className="w-full px-3 py-2 border border-gray-300 rounded"
         />

@@ -8,7 +8,7 @@ const TableBookingSchema = mongoose.Schema({
     },
     pincode:{
         type : String,
-        required:true 
+        // required:true 
     },
     date: {
         type: Date,
