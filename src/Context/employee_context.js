@@ -27,8 +27,49 @@ const Employee_provider = ({ children }) => {
             console.error('Error:', error);
         }
     }
+
+
+    const delete_employee = async (deleted_employee) => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`${base}/admin/employee/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `Bearer ${token}`
+                },
+                body: JSON.stringify(deleted_employee),
+            });
+            const data = await response.json();
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    const create_employee = async (employee) => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`${base}/admin/employee/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `Bearer ${token}`
+                },
+                body: JSON.stringify(employee),
+            });
+            const data = await response.json();
+            if (data.message == "done") {
+                let temp_employee = employee_data;
+                temp_employee.push_back(employee);
+                set_employee(temp_employee);
+            }
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
+    }
     return (
-        <employee_context.Provider value={{ employee_data,set_employee,get_employee }}>
+        <employee_context.Provider value={{ employee_data,set_employee,get_employee,delete_employee,create_employee }}>
             {children}
         </employee_context.Provider>
     );

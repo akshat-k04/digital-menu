@@ -17,7 +17,7 @@ function Dishes() {
     // Update the dish data here (e.g., make an API call to save the changes)
     let temp_dishes = [...Dishes_data];
     temp_dishes[editingDishIndex] = editedDish;
-    await update_Dishes(temp_dishes);
+    await update_Dishes(editedDish);
     set_Dishes(temp_dishes);
     setEditingDishIndex(null);
   };

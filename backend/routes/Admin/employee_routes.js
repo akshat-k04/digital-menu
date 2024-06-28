@@ -61,6 +61,9 @@ async function add_employee(req, res) {
 }
 async function delete_employee(req, res) {
     try {
+        if(!req.body.is_employee){
+            res.send({ 'message': 'he is the owner. Unable to delete' });
+        }
         await restaurant_detail.findOneAndDelete({ _id: req.body.id });
         res.send({ 'message': 'done' });
     } catch (err) {

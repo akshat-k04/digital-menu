@@ -36,7 +36,7 @@ const Dishes_provider = ({ children }) => {
                     'Content-Type': 'application/json',
                     'token': `Bearer ${token}`
                 },
-                body: JSON.stringify({ updated_dish }),
+                body: JSON.stringify( updated_dish ),
             });
             const data = await response.json();
         }
@@ -53,7 +53,7 @@ const Dishes_provider = ({ children }) => {
                     'Content-Type': 'application/json',
                     'token': `Bearer ${token}`
                 },
-                body: JSON.stringify({ deleted_dish }),
+                body: JSON.stringify( deleted_dish ),
             });
             const data = await response.json();
         }
@@ -61,8 +61,30 @@ const Dishes_provider = ({ children }) => {
             console.error('Error:', error);
         }
     }
+    const create_Dish = async (dish) => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`${base}/admin/dishes/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `Bearer ${token}`
+                },
+                body: JSON.stringify(dish),
+            });
+            const data = await response.json();
+            if(data.message=="done"){
+                let temp_dishes = Dishes_data ;
+                temp_dishes.push_back(dish) ;
+                set_Dishes(temp_dishes) ;
+            }
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
+    }
     return (
-        <Dishes_context.Provider value={{ Dishes_data, set_Dishes,get_Dishes,update_Dishes ,delete_Dishes}}>
+        <Dishes_context.Provider value={{ Dishes_data, set_Dishes,get_Dishes,update_Dishes ,delete_Dishes,create_Dish}}>
             {children}
         </Dishes_context.Provider>
     );

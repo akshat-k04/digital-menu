@@ -1,7 +1,9 @@
 // src/NewDishForm.js
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
+import { Dishes_context } from "../Context/Dishes_context";
 
 const NewDishForm = () => {
+  const { create_Dish } = useContext(Dishes_context);
   const [dish, setDish] = useState({
     name: "",
     image_url: "",
@@ -17,10 +19,12 @@ const NewDishForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     //api to be integrated
     e.preventDefault();
     console.log("New Dish:", dish);
+    await create_Dish(dish) ;
+    window.location.href = "/dashboard";
   };
 
   return (

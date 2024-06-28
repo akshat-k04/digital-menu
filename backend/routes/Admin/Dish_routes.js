@@ -35,6 +35,7 @@ DishesRouter.get('/', get_dish);
 
 
 async function add_dish(req, res) {
+    console.log(req.body) ;
     try {
         await DishesModel.create(req.body);
         res.send({ 'message': 'done' });// run only when the above line run without any error
@@ -46,8 +47,8 @@ async function add_dish(req, res) {
 async function update_dish(req, res) {
     try {
         //delete the image from the database also
-        console.log(req.body.updated_dish._id) ;
-        await DishesModel.findOneAndUpdate({ "_id": req.body.updated_dish._id }, req.body.updated_dish);
+        console.log(req.body) ;
+        await DishesModel.findOneAndUpdate({ "_id": req.body._id }, req.body);
         res.send({ 'message': 'done' });// run only when the above line run without any error
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
@@ -57,7 +58,7 @@ async function update_dish(req, res) {
 async function delete_dish(req, res) {
     try {
         //delete the image from database also
-        await DishesModel.findOneAndDelete({ "_id": req.body.deleted_dish._id });
+        await DishesModel.findOneAndDelete({ "_id": req.body._id });
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
