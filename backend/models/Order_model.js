@@ -21,7 +21,7 @@ const OrderSchema = mongoose.Schema({
   ],
   status: {
     type: String,
-    enum: ["Placed", "Preparing", "Ready", "Served"],
+    enum: ["Placed", "done"],
     default: "Placed",
   },
   createdAt: { type: Date, default: Date.now },
