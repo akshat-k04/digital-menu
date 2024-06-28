@@ -2,7 +2,7 @@ import React, { useEffect, useState,useContext } from 'react';
 import './css/Admin_login.css';
 import { Dishes_context } from '../Context/Dishes_context';
 import { Table_schedule_context } from '../Context/Table_schedule_context';
-import { employee_context } from '../Context/employee_context';
+import { Employee_context } from '../Context/employee_context';
 import { Table_registration_context } from '../Context/Table_registration';
 // import { User_context } from '../Context/user_data';
 const base = "http://localhost:8000";
@@ -13,7 +13,7 @@ export default function Admin_login ({checkToken}){
     const [password, setPassword] = useState('');
     const { get_Dishes } = useContext(Dishes_context);
     const { get_table_schedule  } = useContext(Table_schedule_context);
-    const { get_employee } = useContext(employee_context);
+    const { get_employee } = useContext(Employee_context);
     const { get_Table_registration } = useContext(Table_registration_context);
     // const {set_User} = useContext(User_context) ;
 

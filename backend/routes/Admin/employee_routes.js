@@ -50,7 +50,8 @@ async function signin(req, res) {
 }
 async function add_employee(req, res) {
     try {
-        req.body.is_employee = true ;
+        // req.body.is_employee = true ;
+        console.log(req.body) ;
         const salt = await bcrypt.genSalt(10);
         req.body.password = await bcrypt.hash(req.body.password, salt);
         await restaurant_detail.create(req.body);

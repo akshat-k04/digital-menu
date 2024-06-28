@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
+import { Table_registration_context } from "../Context/Table_registration";
 
-const CreateTableRegistration = ({ onRegister }) => {
+const CreateTableRegistration = ({  }) => {
   const [tableNumber, setTableNumber] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [orderId, setOrderId] = useState("");
-
-  const handleSubmit = (e) => {
+  // const [pincode, setPincode] = useState("");
+  // const [orderId, setOrderId] = useState("");
+  const { create_Table_registration } = useContext(Table_registration_context) ;
+  const handleSubmit =async (e) => {
     //api to be integrated
     e.preventDefault();
+    let register_table ={
+      "table_number":tableNumber,
+      "pincode":-1,
+      "order_id":`-${tableNumber}`
+    }
+    await create_Table_registration(register_table);
+    window.location.href = "/dashboard";
     setTableNumber("");
-    setPincode("");
-    setOrderId("");
   };
   return (
     <form
@@ -33,7 +39,7 @@ const CreateTableRegistration = ({ onRegister }) => {
           required
         />
       </div>
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <label htmlFor="pincode" className="block text-gray-700 font-bold mb-2">
           Pincode:
         </label>
@@ -58,7 +64,7 @@ const CreateTableRegistration = ({ onRegister }) => {
           className="w-full px-3 py-2 border border-gray-300 rounded"
           required
         />
-      </div>
+      </div> */}
       <button
         type="submit"
         className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"

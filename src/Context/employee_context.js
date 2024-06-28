@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 const base = "http://localhost:8000";
-const employee_context = createContext();
+const Employee_context = createContext();
 
 const Employee_provider = ({ children }) => {
     const [employee_data , set_employee] =useState({}) ;
@@ -69,10 +69,10 @@ const Employee_provider = ({ children }) => {
         }
     }
     return (
-        <employee_context.Provider value={{ employee_data,set_employee,get_employee,delete_employee,create_employee }}>
+        <Employee_context.Provider value={{ employee_data,set_employee,get_employee,delete_employee,create_employee }}>
             {children}
-        </employee_context.Provider>
+        </Employee_context.Provider>
     );
 };
 
-export { employee_context, Employee_provider };
+export { Employee_context, Employee_provider };

@@ -1,7 +1,9 @@
-// src/CreateRestaurantDetail.js
-import React, { useState } from "react";
+import React, { useState, useContext } from 'react';
+import { Employee_context } from '../Context/employee_context';
 
-const CreateRestaurantDetail = ({ onRegister }) => {
+const CreateRestaurantDetail = ({  }) => {
+  const { employee_data, create_employee } = useContext(Employee_context);
+
   const [restaurantDetail, setRestaurantDetail] = useState({
     username: "",
     password: "",
@@ -16,9 +18,11 @@ const CreateRestaurantDetail = ({ onRegister }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     //api to be integrated
     e.preventDefault();
+    await create_employee(restaurantDetail) ;
+    window.location.href = "/dashboard";
     setRestaurantDetail({
       username: "",
       password: "",

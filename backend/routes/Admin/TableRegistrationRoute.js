@@ -46,7 +46,7 @@ async function add_table(req, res) {
 }
 async function delete_table(req, res) {
     try {
-        await Table_registration_model.findOneAndDelete({ _id: req.body.id });
+        await Table_registration_model.findOneAndDelete({ _id: req.body._id });
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
@@ -54,7 +54,7 @@ async function delete_table(req, res) {
 }
 async function update_table(req, res) {
     try {
-        await Table_registration_model.findOneAndUpdate({ _id: req.body.id },req.body);
+        await Table_registration_model.findOneAndUpdate({ _id: req.body._id },req.body);
         res.send({ 'message': 'done' });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });

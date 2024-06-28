@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import CreateRestaurantDetail from './CreateRestaurantDetail';
-import { employee_context } from '../Context/employee_context';
+import { Employee_context } from '../Context/employee_context';
 
 function Employee() {
-  const { employee_data, set_employee, delete_employee } = useContext(employee_context);
+  const { employee_data, set_employee, delete_employee } = useContext(Employee_context);
   const [create, setCreate] = useState(false);
 
   const handleDeleteClick = async (index) => {

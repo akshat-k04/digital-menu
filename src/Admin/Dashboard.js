@@ -6,7 +6,7 @@ import Employee from "./Employee";
 import Dishes from "./Dishes";
 import { Dishes_context } from "../Context/Dishes_context";
 import { Table_schedule_context } from "../Context/Table_schedule_context";
-import { employee_context } from "../Context/employee_context";
+import { Employee_context } from "../Context/employee_context";
 import { Table_registration_context } from "../Context/Table_registration";
 const base = "http://localhost:8000";
 
@@ -14,7 +14,7 @@ export default function Dashboard({ checkToken }) {
   const [mode, setMode] = useState("tableregistration");
   const { get_Dishes } = useContext(Dishes_context);
   const { get_table_schedule } = useContext(Table_schedule_context);
-  const { get_employee } = useContext(employee_context);
+  const { get_employee } = useContext(Employee_context);
   const { get_Table_registration } = useContext(Table_registration_context);
   useEffect(() => {
     const checkToken = async () => {
