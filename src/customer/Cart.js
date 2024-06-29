@@ -61,16 +61,16 @@ function Cart() {
   };
 
   const handleSubmit = async () => {
-    const taxRate = 0.1; // update tax rate
+    const taxRate = 0.1; // update tax rate later
     const orderData = formatOrderData(cart, totalAmount, taxRate);
     console.log(orderData);
     // api to be integrated here with JSON orderData, which is above
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 flex flex-col gap-4">
       <h2 className="text-2xl font-bold mb-4">My Order</h2>
-      <div className="space-y-4">
+      <div className="space-y-4 flex flex-col gap-2">
         {cart.map((item) => (
           <div key={item.id} className="flex flex-col border p-2 rounded mb-4">
             <div className="flex items-center justify-between">
@@ -99,40 +99,45 @@ function Cart() {
                 </button>
               </div>
             </div>
-            <div className="mt-2">
-              <label className="block text-gray-700">
-                Special Instructions:
-              </label>
-              <input
+            <div className="mt-2 ">
+              <label className="block text-gray-700">Instructions:</label>
+              <div className="flex flex-col text-left">
+                {item?.specialInstructions?.split(",")?.map((el) => {
+                  return <span className="w-full  p-2 rounded">{el}</span>;
+                })}
+                {/* <input
                 type="text"
                 value={item.specialInstructions || ""}
                 onChange={(e) =>
                   updateSpecialInstructions(item.id, e.target.value)
-                }
-                className="w-full border-2 p-2 rounded"
-                placeholder="Add any special instructions here"
-              />
+                  }
+                  className="w-full border-2 p-2 rounded"
+                  placeholder="Add any special instructions here"
+                  /> */}
+              </div>
             </div>
           </div>
         ))}
       </div>
       <div className="mt-4">
-        <button
-          onClick={() => navigate("/order")}
-          className="bg-green-500 text-white p-2 rounded w-full mb-4"
-        >
-          Add More
-        </button>
         <div className="flex justify-between font-bold mb-2">
           <span>Total:</span>
           <span>₹{totalAmount.toFixed(2)}</span>
         </div>
-        <button
-          onClick={handleSubmit}
-          className="bg-green-500 text-white p-2 rounded w-full"
-        >
-          Confirm Order
-        </button>
+        <div className="flex px-4 gap-4">
+          <button
+            onClick={() => navigate("/order")}
+            className="bg-blue-500 text-white p-2 rounded w-full "
+          >
+            Add More
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="bg-green-500 text-white p-2 rounded w-full"
+          >
+            Confirm Order
+          </button>
+        </div>
       </div>
     </div>
   );

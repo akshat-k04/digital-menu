@@ -8,6 +8,8 @@ import { Table_registration_provider } from "./Context/Table_registration";
 import { Table_schedule_provider } from "./Context/Table_schedule_context";
 import Order from "./Customer/Order.js";
 import Cart from "./Customer/Cart.js";
+import LoginPage from "./Customer/LoginPage.js";
+import ItemDetails from "./Customer/ItemDetails.js";
 const base = "http://localhost:8000";
 
 function App() {
@@ -16,16 +18,18 @@ function App() {
       <Table_registration_provider>
         <Table_schedule_provider>
           <Employee_provider>
-              <Router>
-                <div className="App">
-                  <Routes>
-                    <Route path="/" element={<Admin_login />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/Order" element={<Order />} />
-                    <Route path="/cart"element={<Cart />} />
-                  </Routes>
-                </div>
-              </Router>
+            <Router>
+              <div className="App">
+                <Routes>
+                  <Route path="/" element={<Admin_login />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/Order" element={<Order />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/item/:id" element={<ItemDetails />} />
+                </Routes>
+              </div>
+            </Router>
           </Employee_provider>
         </Table_schedule_provider>
       </Table_registration_provider>

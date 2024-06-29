@@ -63,10 +63,6 @@ function Order() {
   ];
 
   const [hide, setHide] = useState(false);
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem("cart");
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
   const [searchQuery, setSearchQuery] = useState("");
   const categories = [...new Set(dishes.map((dish) => dish.category))];
   const [current, setCurrent] = useState(categories[0]);
@@ -79,14 +75,8 @@ function Order() {
     );
   });
 
-  const addToCart = (dish) => {
-    const newCart = [...cart, { ...dish, quantity: 1 }];
-    setCart(newCart);
-    localStorage.setItem("cart", JSON.stringify(newCart));
-  };
-
-  const goToCart = () => {
-    navigate("/cart", { state: { cart, dishes } });
+  const handleItemClick = (id) => {
+    navigate(`/item/${id}`);
   };
 
   return (
@@ -95,9 +85,9 @@ function Order() {
       <div className="h-1/6">
         <div className="flex justify-between mx-5 items-center">
           <span className="text-4xl font-bold">Menu</span>
-          <span>
+          {/* <span>
             <GiHamburgerMenu size={30} />
-          </span>
+          </span> */}
         </div>
         <div>
           <input
@@ -110,7 +100,7 @@ function Order() {
           />
         </div>
       </div>
-      <div className={hide ? "h-5/6" : "h-3/6"}>
+      <div className="h-3/6">
         <div className="flex text-3xl h-1/6 gap-4 px-4 z-10 backdrop-blur-10 overflow-x-auto">
           {categories.map((item, index) => (
             <span key={index} onClick={() => setCurrent(item)}>
@@ -120,7 +110,11 @@ function Order() {
         </div>
         <div className="flex w-full px-4 gap-4 relative z-1 h-5/6 overflow-auto">
           {filteredDishes.map((item, index) => (
-            <div key={index} className="flex flex-col items-center">
+            <div
+              key={index}
+              className="flex flex-col items-center cursor-pointer"
+              onClick={() => handleItemClick(item.id)}
+            >
               <img
                 src={item.image_url}
                 alt={item.name}
@@ -128,22 +122,16 @@ function Order() {
               />
               <span className="font-bold">{item.name}</span>
               <span className="text-gray-600">₹{item.price.toFixed(2)}</span>
-              <button
-                onClick={() => addToCart(item)}
-                className="bg-green-500 text-white p-2 rounded mt-2"
-              >
-                Add to Cart
-              </button>
             </div>
           ))}
         </div>
       </div>
       <div className="h-1/6 flex justify-center items-center">
         <button
-          onClick={goToCart}
+          onClick={() => navigate("/cart")}
           className="bg-blue-500 text-white p-2 rounded"
         >
-          View Cart ({cart.length})
+          View Cart
         </button>
       </div>
     </div>
