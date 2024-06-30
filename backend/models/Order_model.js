@@ -2,6 +2,18 @@ const { type } = require("@testing-library/user-event/dist/type");
 const mongoose = require("mongoose");
 
 const OrderSchema = mongoose.Schema({
+  order_id:{
+    type:String,
+    unique:true,
+    require:true
+  },
+  customer_name: {
+    type: String,
+  },
+  customer_contact: {
+    type: String,
+  },
+
   amount: {
     type: String,
   },
@@ -21,13 +33,14 @@ const OrderSchema = mongoose.Schema({
   ],
   status: {
     type: String,
-    enum: ["Placed", "done"],
-    default: "Placed",
+    enum: ["Order not Placed","Order Placed", "Served","Payment Completed"],
+    default: "Order not Placed",
   },
   createdAt: { type: Date, default: Date.now },
 });
 
 // Create a model
-const TableBookingModel = mongoose.model("TableBooking", OrderSchema);
+const Order_model = mongoose.model("Order_model", OrderSchema);
 
-module.exports = TableBookingModel;
+module.exports = Order_model;
+// { "_id": { "$oid": "667c732ea6c89dc3a3a7f439" }, "name": "Dumplings", "image_url": "http://example.com/images/dumplings.jpg", "catagory": "Chinese", "price": { "$numberInt": "8" }, "__v": { "$numberInt": "0" } }

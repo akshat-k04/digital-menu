@@ -8,6 +8,7 @@ import { Dishes_context } from "../Context/Dishes_context";
 import { Table_schedule_context } from "../Context/Table_schedule_context";
 import { Employee_context } from "../Context/employee_context";
 import { Table_registration_context } from "../Context/Table_registration";
+import Orders from "./Orders";
 const base = "http://localhost:8000";
 
 export default function Dashboard({ checkToken }) {
@@ -61,6 +62,7 @@ export default function Dashboard({ checkToken }) {
       {mode == "table" && <Table />}
       {mode == "employee" && <Employee />}
       {mode == "dishes" && <Dishes />}
+      {mode == "orders" && <Orders />}
     </div>
   );
 }

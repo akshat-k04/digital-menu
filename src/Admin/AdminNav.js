@@ -32,6 +32,13 @@ function AdminNav({ setMode }) {
       >
         Employee
       </span>
+      <span
+        onClick={() => {
+          setMode("orders");
+        }}
+      >
+        Orders
+      </span>
     </div>
   );
 }

@@ -112,17 +112,18 @@ function Dishes() {
                 </td>
                 <td className="w-1/4 text-center">
                   {editingDishIndex === index ? (
-                    <button onClick={handleDoneClick} className="p-2">
+                    <button onClick={handleDoneClick} className="p-2 bg-green-500 text-white rounded-md mr-1">
                       Done
                     </button>
                   ) : (
-                    <button onClick={() => handleEditClick(index)} className="p-2">
+                    <button onClick={() => handleEditClick(index)} className="p-2 bg-blue-500 text-white rounded-md mr-1">
                       Edit
                     </button>
                   )}
-                  <button onClick={() => handleDeleteClick(index)} className="p-2 mx-1">
+                  <button onClick={() => handleDeleteClick(index)} className="p-2 bg-red-500 text-white rounded-md">
                     Delete
                   </button>
+
                 </td>
               </tr>
             ))}

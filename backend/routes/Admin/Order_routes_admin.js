@@ -3,7 +3,7 @@
 const express = require('express');
 const OrderModel = require('./../../models/Order_model.js');
 const jwt = require('jsonwebtoken');
-
+const dishes = require('./../../models/dishes_model.js') ;
 const OrderRouter = express.Router();
 
 const authenticateJWT = (req, res, next) => {
@@ -26,22 +26,31 @@ const authenticateJWT = (req, res, next) => {
 
 
 OrderRouter.post('/update', authenticateJWT, update_order); // used by owner to complete the order if the user did't tap on complete order
-OrderRouter.post('find',find_order) ;
+OrderRouter.post('/find',find_order) ;
 OrderRouter.get('/', get_orders);
 
 
 async function update_order(req, res) {
     try {
-        await OrderModel.findOneAndUpdate({ _id: req.body.id }, req.body);
+        // let tep = await dishes.findOne({});
+        // req.body.items = [
+        //     {
+        //         "menuItems":tep._id ,
+        //         "quantity":5
+        //     }
+        // ] ;
+        await OrderModel.findOneAndUpdate({ order_id: req.body.order_id }, req.body);
         res.send({ 'message': 'done' });
-    } catch (err) {
+    } 
+    catch (err) {
         res.status(500).send({ 'message': `${err}` });
     }
 }
 async function find_order(req, res) {
     try {
-        await OrderModel.findOne({ _id: req.body.order_id }, req.body);
-        res.send({ 'message': 'done' });
+        let data =await OrderModel.findOne({ order_id: req.body.order_id });
+        console.log(data) ;
+        res.send(data);
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
     }
