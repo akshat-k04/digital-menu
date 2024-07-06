@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+const base = "http://localhost:8000";
+
 
 function Cart() {
   const navigate = useNavigate();
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+      // console.log(savedCart) ;
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.error("Error parsing cart from localStorage", error);
+      return [];
+    }
   });
 
   const updateQuantity = (id, amount) => {
@@ -38,12 +46,7 @@ function Cart() {
 
   const formatOrderData = (cart, totalAmount, taxRate = 0.1) => {
     const items = cart.map((item) => ({
-      menuItem: {
-        name: item.name,
-        image_url: item.image_url,
-        category: item.category,
-        price: item.price,
-      },
+      menuItem: item._id,
       quantity: item.quantity,
       specialInstructions: item.specialInstructions || "",
     }));
@@ -64,7 +67,25 @@ function Cart() {
     const taxRate = 0.1; // update tax rate later
     const orderData = formatOrderData(cart, totalAmount, taxRate);
     console.log(orderData);
-    // api to be integrated here with JSON orderData, which is above
+
+    const token = localStorage.getItem('c_token');
+    try {
+      const response = await fetch(`${base}/customer/order/update`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'c_token': `Bearer ${token}`
+        },
+        body: JSON.stringify(orderData),
+      });
+      const data = await response.json();
+      if(data.message=="done"){
+        navigate('./order') ;
+      }
+    }
+    catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -102,18 +123,9 @@ function Cart() {
             <div className="mt-2 ">
               <label className="block text-gray-700">Instructions:</label>
               <div className="flex flex-col text-left">
-                {item?.specialInstructions?.split(",")?.map((el) => {
-                  return <span className="w-full  p-2 rounded">{el}</span>;
-                })}
-                {/* <input
-                type="text"
-                value={item.specialInstructions || ""}
-                onChange={(e) =>
-                  updateSpecialInstructions(item.id, e.target.value)
-                  }
-                  className="w-full border-2 p-2 rounded"
-                  placeholder="Add any special instructions here"
-                  /> */}
+                {item?.specialInstructions?.split(",")?.map((el, index) => (
+                  <span key={index} className="w-full  p-2 rounded">{el}</span>
+                ))}
               </div>
             </div>
           </div>

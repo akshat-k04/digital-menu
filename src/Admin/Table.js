@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import CreateTableBooking from "./CreateTableBooking";
 import { Table_schedule_context } from "../Context/Table_schedule_context";
 import { Table_registration_context } from "../Context/Table_registration";
+const base = "http://localhost:8000" ;
 
 function Table() {
   const { Table_schedule_data, delete_Table_schedule, sort_and_set, update_Table_schedule } = useContext(Table_schedule_context);
@@ -21,6 +22,34 @@ function Table() {
     const formattedDate = `${year}-${month}-${day}`;
     setSelectedDate(formattedDate);
   },[]) ;
+
+
+  const [status, setStatus] = useState("");
+
+  const handleSave = async () => {
+    try {
+      const response = await fetch(`${base}/admin/orders/update`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'token': `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({ order_id: orderDetails.order_id, "status": status }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        // Update the UI or show a success message
+        closeModal();
+      } else {
+        // Handle the error
+        console.error(result.message);
+      }
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
+  };
+
+  
   const tables = [...new Set(Table_registration_data.map((booking) => booking.table_number))].sort((a, b) => a - b);
   const hours = Array.from({ length: 24 }, (_, i) => i + 1);
 
@@ -71,7 +100,7 @@ function Table() {
 
   const handleOrderClick = async (order_id) => {
     try {
-      const response = await fetch('http://localhost:8000/admin/orders/find', {
+      const response = await fetch(`${base}/admin/orders/find`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,6 +112,7 @@ function Table() {
       console.log(order) ;
       if (response.ok) {
         setOrderDetails(order);
+        setStatus(order.status) ;
       } else {
         console.error(order.message);
       }
@@ -227,21 +257,23 @@ function Table() {
           <div className="bg-white p-6 rounded-md w-1/2">
             <h2 className="text-2xl font-bold mb-4">Order Details</h2>
             <div className="mb-4">
-              <p className="text-lg">
-                Customer Name: {orderDetails.customer_name}
-              </p>
-              <p className="text-lg">
-                Customer Contact: {orderDetails.customer_contact}
-              </p>
-              <p className="text-lg">
-                Current Status: {orderDetails.status}
-              </p>
-              <p className="text-lg">
-                Total Amount: {orderDetails.amount}
-              </p>
-              <p className="text-lg">
-                GST: {orderDetails.tax}
-              </p>
+              <p className="text-lg">Customer Name: {orderDetails.customer_name}</p>
+              <p className="text-lg">Customer Contact: {orderDetails.customer_contact}</p>
+              <p className="text-lg">Total Amount: {orderDetails.amount}</p>
+              <p className="text-lg">GST: {orderDetails.tax}</p>
+            </div>
+            <div className="mb-4">
+              <label className="text-lg">Current Status:</label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)} // Function to handle status change
+                className="ml-2 p-2 border rounded-md"
+              >
+                <option value="Order not Placed">Order not Placed</option>
+                <option value="Order Placed">Order Placed</option>
+                <option value="Served">Served</option>
+                <option value="Payment Completed">Payment Completed</option>
+              </select>
             </div>
             <table className="w-full mb-4">
               <thead>
@@ -263,6 +295,12 @@ function Table() {
             </table>
             <div className="flex justify-end">
               <button
+                onClick={handleSave} // Function to handle save
+                className="p-2 bg-green-500 text-white rounded-md mr-2"
+              >
+                Save
+              </button>
+              <button
                 onClick={closeModal}
                 className="p-2 bg-red-500 text-white rounded-md"
               >
@@ -271,8 +309,8 @@ function Table() {
             </div>
           </div>
         </div>
-
       )}
+
     </div>
   );
 }

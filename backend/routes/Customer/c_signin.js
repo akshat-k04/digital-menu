@@ -5,35 +5,35 @@ const express = require("express");
 
 const Customer_signin = express.Router();
 
-const authenticateJWT = (req, res, next) => {
-  const authHeader = req.header("token");
+const verifyToken = (req, res, next) => {
+  const token = req.headers['c_token']?.split(' ')[1];
+  if (!token) {
+    return res.status(401).send('Access Denied: No Token Provided');
+  }
 
-  if (authHeader) {
-    const token = authHeader.split(" ")[1];
-
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
-      if (err || user.is_employee) {
-        res.send({ message: "error" });
-        return res.sendStatus(403); // Forbidden
-      }
-      console.log("Verified");
-      next();
-    });
-  } else {
-    res.send({ message: "error" });
-    res.sendStatus(401); // Unauthorized
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    req.user = verified;
+    next();
+  } catch (err) {
+    res.status(400).send('Invalid Token');
   }
 };
 
-Customer_signin.post("/Signin", signin);
+Customer_signin.post("/", signin);
+Customer_signin.post("/verify", verifyToken, (req, res) => { res.status(200).json({ message: 'Token is valid', user: req.user }); });
+
+// async function
 
 async function signin(req, res) {
   const { table, pincode } = req.body;
 
   const Table_data = await Table_details.findOne({ table_number: table });
-  if (Table_data && pincode == Table_data.pincode) {
+  
+  if (Table_data && pincode.toString() == Table_data.pincode) {
+    // console.log(Table_data.order_id) ;
     const token = jwt.sign(
-      { order_id: Table_details.order_id },
+      { order_id: Table_data.order_id,table:table },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1h" }
     );

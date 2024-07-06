@@ -1,79 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
+import { Dishes_context } from "../Context/Dishes_context";
+const base = "http://localhost:8000";
 
 function Order() {
-  const dishes = [
-    {
-      id: 1,
-      name: "Pasta Carbonara",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Italian",
-      price: 12.99,
-    },
-    {
-      id: 2,
-      name: "Sushi Platter",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Japanese",
-      price: 18.5,
-    },
-    {
-      id: 3,
-      name: "Chicken Tikka Masala",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Indian",
-      price: 15.0,
-    },
-    {
-      id: 4,
-      name: "Beef Tacos",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Mexican",
-      price: 10.5,
-    },
-    {
-      id: 5,
-      name: "Vegan Burger",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Vegan",
-      price: 11.99,
-    },
-    {
-      id: 6,
-      name: "Margherita Pizza",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Italian",
-      price: 14.0,
-    },
-    {
-      id: 7,
-      name: "Pad Thai",
-      image_url:
-        "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Thai",
-      price: 13.25,
-    },
-  ];
-
+  const { Dishes_data, get_Dishes } = useContext(Dishes_context);
   const [hide, setHide] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const categories = [...new Set(dishes.map((dish) => dish.category))];
-  const [current, setCurrent] = useState(categories[0]);
+  const [Catagories, setCatagories] = useState([]);
+  const [current, setCurrent] = useState("");
   const navigate = useNavigate();
 
-  const filteredDishes = dishes.filter((dish) => {
-    return (
-      dish.category === current &&
-      dish.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
+  useEffect(() => {
+    // localStorage.setItem("cart", JSON.stringify("")) ;
+    const checkToken = async () => {
+      const token = localStorage.getItem('c_token');
+      if (!token) {
+        navigate("/login");
+        console.log("No token");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${base}/customer/Signin/verify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'c_token': `Bearer ${token}`
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Token verification failed');
+        }
+
+        const data = await response.json();
+        await get_Dishes();
+
+      } catch (error) {
+        console.error('Error:', error);
+        navigate("/login");
+      }
+    };
+    checkToken();
+  }, []);
+
+  useEffect(() => {
+    if (Array.isArray(Dishes_data) && Dishes_data.length > 0) {
+      const uniqueCatagories = [...new Set(Dishes_data.map((dish) => dish.catagory))];
+      setCatagories(uniqueCatagories);
+      setCurrent(uniqueCatagories[0]);
+    }
+  }, [Dishes_data]);
+
+
+
+  const filteredDishes = Array.isArray(Dishes_data)
+    ? Dishes_data.filter((dish) => {
+      return (
+        dish.catagory === current &&
+        dish.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    })
+    : [];
 
   const handleItemClick = (id) => {
     navigate(`/item/${id}`);
@@ -102,7 +92,7 @@ function Order() {
       </div>
       <div className="h-3/6">
         <div className="flex text-3xl h-1/6 gap-4 px-4 z-10 backdrop-blur-10 overflow-x-auto">
-          {categories.map((item, index) => (
+          {Catagories.map((item, index) => (
             <span key={index} onClick={() => setCurrent(item)}>
               {item}
             </span>
@@ -113,7 +103,7 @@ function Order() {
             <div
               key={index}
               className="flex flex-col items-center cursor-pointer"
-              onClick={() => handleItemClick(item.id)}
+              onClick={() => handleItemClick(item._id)}
             >
               <img
                 src={item.image_url}

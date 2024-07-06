@@ -10,9 +10,9 @@ const Dishes = require('./c_dishes_routes.js') ;
 const CustomerRouter = express.Router();
 
 
-CustomerRouter.use('/dishes', Dishes);
+// CustomerRouter.use('/dishes', Dishes);
 CustomerRouter.use('/order', Order);
-CustomerRouter.post('/signin',signin) ; // once customer sign in then only he will able to view and order dishes
+CustomerRouter.use('/Signin',signin) ; // once customer sign in then only he will able to view and order dishes
 
 
 

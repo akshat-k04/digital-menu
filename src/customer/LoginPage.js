@@ -1,14 +1,77 @@
-import React, { useState } from "react";
+import React, { useState,useContext,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Dishes_context } from "../Context/Dishes_context";
+const base = "http://localhost:8000";
 
 function LoginPage() {
-  const [tableNumber, setTableNumber] = useState("");
-  const [pinNumber, setPinNumber] = useState("");
+  const [table, setTableNumber] = useState("");
+  const [pincode, setPinNumber] = useState("");
   const navigate = useNavigate();
+  const { get_Dishes } = useContext(Dishes_context);
 
-  const handleLogin = () => {
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = localStorage.getItem('c_token');
+      if (!token) {
+        // If no token
+        // redirect to login page
+        // window.location.href = '/';
+        console.log("No token");
+      }
+
+      try {
+        const response = await fetch(`${base}/customer/Signin/verify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'c_token': `Bearer ${token}`
+          },
+        });
+
+        if (!response.ok) {
+          // window.location.href = '/';
+          throw new Error('Token verification failed');
+        }
+
+        // Token is valid, proceed with the component logic
+        const data = await response.json();
+        console.log(data);
+        await get_Dishes();
+        navigate("/order");
+
+      } catch (error) {
+        console.error('Error:', error);
+        // re direct to login page
+      }
+    };
+    checkToken();
+  }, []);
+  const handleLogin = async() => {
     // api for login
-    navigate("/order");
+    const response = await fetch(`${base}/customer/Signin/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({"table":table, "pincode":pincode}),
+    });
+
+    if (!response.ok) {
+      window.alert("Invalid credentials!");
+    }
+
+    const data = await response.json();
+
+    if(data.token){
+      localStorage.setItem('c_token', data.token);
+      // add use context here and save it globally
+      // redirect to new page
+      await get_Dishes();
+      navigate("/order");
+    }
+    else{
+      window.alert("Something went wrong!");
+    }
   };
 
   // const handleRegularCustomerLogin = () => {
@@ -26,32 +89,32 @@ function LoginPage() {
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="tableNumber"
+            htmlFor="table"
           >
             Table number
           </label>
           <input
             type="text"
-            id="tableNumber"
+            id="table"
             placeholder="Enter the table number"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={tableNumber}
+            value={table}
             onChange={(e) => setTableNumber(e.target.value)}
           />
         </div>
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="pinNumber"
+            htmlFor="pincode"
           >
             Enter the pin number
           </label>
           <input
             type="password"
-            id="pinNumber"
+            id="pincode"
             placeholder="Enter the pin number"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={pinNumber}
+            value={pincode}
             onChange={(e) => setPinNumber(e.target.value)}
           />
         </div>
