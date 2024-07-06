@@ -33,10 +33,11 @@ function checkQuantityReduction(prev_order, updated_order) {
     let difference = [];
     for (let pi = 0; pi < prev_order.length; pi++) {
         for (let i = 0; i < updated_order.length; i++) {
-            // console.log(updated_order[i].menuItem) ;
             if (prev_order[pi].menuItem == updated_order[i].menuItem) {
-                let tempDiff = updated_order[i].quantity - prev_order[pi].quantity;
-                difference.push(tempDiff);
+                let tempDiff = updated_order[i];
+                
+                tempDiff.quantity = updated_order[i].quantity - prev_order[pi].quantity ;
+                if (tempDiff.quantity >0) difference.push(tempDiff);
                 break; // Once matched, no need to continue with this updated_order item
             }
         }
