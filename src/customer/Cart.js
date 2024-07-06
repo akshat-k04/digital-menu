@@ -58,7 +58,7 @@ function Cart() {
       amount: amount.toString(),
       Tax: tax.toString(),
       items: items,
-      status: "Placed",
+      status: "Order Placed",
       createdAt: new Date().toISOString(),
     };
   };

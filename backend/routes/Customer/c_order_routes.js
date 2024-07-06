@@ -1,7 +1,7 @@
 const express = require('express');
 const OrderModel = require('./../../models/Order_model.js');
 const jwt = require('jsonwebtoken');
-
+const subOrder_model = require('./../../models/sub_order.js') ;
 const OrderRouter = express.Router();
 
 const verifyToken = (req, res, next) => {
@@ -30,15 +30,21 @@ function checkQuantityReduction(prev_order, updated_order) {
         return updatedItem && updatedItem.quantity >= prevItem.quantity;
     });
 
-    const difference = prev_order.filter((prevItem) => {
-        const updatedItem = updated_order.find((newItem) => newItem.menuItem === prevItem.menuItem);
-
-        // Check for quantity reduction and item existence
-        return updatedItem ? updatedItem.quantity < prevItem.quantity : true;
-    });
+    let difference = [];
+    for (let pi = 0; pi < prev_order.length; pi++) {
+        for (let i = 0; i < updated_order.length; i++) {
+            // console.log(updated_order[i].menuItem) ;
+            if (prev_order[pi].menuItem == updated_order[i].menuItem) {
+                let tempDiff = updated_order[i].quantity - prev_order[pi].quantity;
+                difference.push(tempDiff);
+                break; // Once matched, no need to continue with this updated_order item
+            }
+        }
+    }
 
     return { safe, difference };
 }
+
 
 async function update_order(req, res) {
     try {
@@ -47,9 +53,17 @@ async function update_order(req, res) {
         let {safe, difference} = checkQuantityReduction(prev_order.items, updated_order);
         // console.log(updated_order) ;
         // console.log(prev_order.items) ;
+        console.log(difference) ;
         if(safe){
             await OrderModel.findOneAndUpdate({ order_id: req.user.order_id }, req.body);
             // send the difference to the queue , for table number check req.user.table
+            let sub_order ={
+                "order_id": req.user.order_id,
+                "status": "Order Placed",
+                "items": difference
+            }
+            await subOrder_model.create(sub_order) ;
+
             res.send({ 'message': 'done' });
         }
         else{

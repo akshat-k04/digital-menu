@@ -33,9 +33,9 @@ function ItemDetails() {
       cartItem.price = cartItem.price * 2;
     }
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingItem = cart.find((item) => item._id == cartItem._id);
+    let existingItem = cart.find((item) => item._id == cartItem._id);
     // console.log(existingItem);
-    if (existingItem) existingItem.quantity++ ;
+    if (existingItem) existingItem = existingItem.quantity++ ;
     else cart.push(cartItem); 
 
     localStorage.setItem("cart", JSON.stringify(cart));
