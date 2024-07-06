@@ -16,15 +16,15 @@ const authenticateJWT = (req, res, next) => {
         const token = authHeader.split(' ')[1];
 
         jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
-            if (err || user.is_employee) {
-                res.send({ "message": "error" });
+            if (err || !('is_employee' in user)) {
+                res.send({ 'message': 'error' });
                 return res.sendStatus(403); // Forbidden
             }
             console.log("Verified");
             next();
         });
     } else {
-        res.send({ "message": "error" });
+        res.send({ 'message': 'error' });
         res.sendStatus(401); // Unauthorized
     }
 };

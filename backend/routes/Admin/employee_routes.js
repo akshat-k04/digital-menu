@@ -15,7 +15,14 @@ const verifyToken = (req, res, next) => {
     }
 
     try {
-        const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const verified = jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
+            if (err || !('is_employee' in user)) {
+                res.send({ 'message': 'error' });
+                return res.sendStatus(403); // Forbidden
+            }
+            console.log("Verified");
+        });
+        
         req.user = verified;
         next();
     } catch (err) {

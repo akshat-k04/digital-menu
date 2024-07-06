@@ -24,7 +24,7 @@ OrderRouter.post('/find', find_order);
 
 function checkQuantityReduction(prev_order, updated_order) {
     const safe = prev_order.every((prevItem) => {
-        const updatedItem = updated_order.find((newItem) => newItem.menuItem === prevItem.menuItem);
+        const updatedItem = updated_order.find((newItem) => newItem.menuItem == prevItem.menuItem._id);
 
         // Ensure updated item exists and quantity is not reduced
         return updatedItem && updatedItem.quantity >= prevItem.quantity;
@@ -44,9 +44,9 @@ async function update_order(req, res) {
     try {
         let prev_order = await OrderModel.findOne({ order_id: req.user.order_id }) ;
         let updated_order = req.body.items ;
-        console.log(prev_order.items);
         let {safe, difference} = checkQuantityReduction(prev_order.items, updated_order);
-
+        // console.log(updated_order) ;
+        // console.log(prev_order.items) ;
         if(safe){
             await OrderModel.findOneAndUpdate({ order_id: req.user.order_id }, req.body);
             // send the difference to the queue , for table number check req.user.table

@@ -79,8 +79,9 @@ function Cart() {
         body: JSON.stringify(orderData),
       });
       const data = await response.json();
+      console.log(data) ;
       if(data.message=="done"){
-        navigate('./order') ;
+        window.location.href = '/order';
       }
     }
     catch (error) {
