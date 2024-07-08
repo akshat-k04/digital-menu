@@ -19,7 +19,7 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-OrderRouter.post('/update', verifyToken, update_order); // used by owner to complete the order if the user did't tap on complete order
+OrderRouter.update('/update', verifyToken, update_order); // used by owner to complete the order if the user did't tap on complete order
 OrderRouter.post('/find', find_order);
 
 function checkQuantityReduction(prev_order, updated_order) {

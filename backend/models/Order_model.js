@@ -1,11 +1,11 @@
-const { type } = require("@testing-library/user-event/dist/type");
+// const { type } = require("@testing-library/user-event/dist/type");
 const mongoose = require("mongoose");
 
 const OrderSchema = mongoose.Schema({
-  order_id:{
-    type:String,
-    unique:true,
-    require:true
+  order_id: {
+    type: String,
+    unique: true,
+    require: true,
   },
   customer_name: {
     type: String,
@@ -13,7 +13,9 @@ const OrderSchema = mongoose.Schema({
   customer_contact: {
     type: String,
   },
-
+  table: {
+    type: String,
+  },
   amount: {
     type: String,
   },
@@ -33,7 +35,7 @@ const OrderSchema = mongoose.Schema({
   ],
   status: {
     type: String,
-    enum: ["Order not Placed","Order Placed", "Served","Payment Completed"],
+    enum: ["Order not Placed", "Order Placed", "Served", "Payment Completed"],
     default: "Order not Placed",
   },
   createdAt: { type: Date, default: Date.now },

@@ -3,8 +3,23 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const base = "http://localhost:8000";
 
-
 function Cart() {
+  const [info, setInfo] = useState({});
+  function parseJwt(token) {
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    var jsonPayload = decodeURIComponent(
+      window
+        .atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+
+    return JSON.parse(jsonPayload);
+  }
   const navigate = useNavigate();
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
@@ -36,6 +51,7 @@ function Cart() {
   };
 
   useEffect(() => {
+    setInfo(parseJwt(localStorage.getItem("c_token")));
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
@@ -55,6 +71,7 @@ function Cart() {
     const amount = (totalAmount + parseFloat(tax)).toFixed(2);
 
     return {
+      table: info?.table,
       amount: amount.toString(),
       Tax: tax.toString(),
       items: items,
@@ -68,24 +85,23 @@ function Cart() {
     const orderData = formatOrderData(cart, totalAmount, taxRate);
     console.log(orderData);
 
-    const token = localStorage.getItem('c_token');
+    const token = localStorage.getItem("c_token");
     try {
       const response = await fetch(`${base}/customer/order/update`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'c_token': `Bearer ${token}`
+          "Content-Type": "application/json",
+          c_token: `Bearer ${token}`,
         },
         body: JSON.stringify(orderData),
       });
       const data = await response.json();
-      console.log(data) ;
-      if(data.message=="done"){
-        window.location.href = '/order';
+      console.log(data);
+      if (data.message == "done") {
+        window.location.href = "/order";
       }
-    }
-    catch (error) {
-      console.error('Error:', error);
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -125,7 +141,9 @@ function Cart() {
               <label className="block text-gray-700">Instructions:</label>
               <div className="flex flex-col text-left">
                 {item?.specialInstructions?.split(",")?.map((el, index) => (
-                  <span key={index} className="w-full  p-2 rounded">{el}</span>
+                  <span key={index} className="w-full  p-2 rounded">
+                    {el}
+                  </span>
                 ))}
               </div>
             </div>
