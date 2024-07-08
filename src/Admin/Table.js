@@ -2,27 +2,27 @@ import React, { useState, useContext, useEffect } from "react";
 import CreateTableBooking from "./CreateTableBooking";
 import { Table_schedule_context } from "../Context/Table_schedule_context";
 import { Table_registration_context } from "../Context/Table_registration";
-const base = "http://localhost:8000" ;
+const base = "http://localhost:8000";
 
 function Table() {
   const { Table_schedule_data, delete_Table_schedule, sort_and_set, update_Table_schedule } = useContext(Table_schedule_context);
-  const { Table_registration_data} = useContext(Table_registration_context);
+  const { Table_registration_data } = useContext(Table_registration_context);
 
   const [create, setCreate] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
   const [selectedHour, setSelectedHour] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [orderDetails, setOrderDetails] = useState(null); // Add state for order details
-  const [after_time,set_after_time] = useState(false) ;
-  useEffect(()=>{
+  const [after_time, set_after_time] = useState(false);
+
+  useEffect(() => {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
     const day = String(today.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
     setSelectedDate(formattedDate);
-  },[]) ;
-
+  }, []);
 
   const [status, setStatus] = useState("");
 
@@ -49,16 +49,16 @@ function Table() {
     }
   };
 
-  
   const tables = [...new Set(Table_registration_data.map((booking) => booking.table_number))].sort((a, b) => a - b);
   const hours = Array.from({ length: 24 }, (_, i) => i + 1);
 
-  const filteredBookings = Table_schedule_data.filter((booking) => {
+  // Ensure Table_schedule_data is an array
+  const filteredBookings = Array.isArray(Table_schedule_data) ? Table_schedule_data.filter((booking) => {
     const isTableMatch = selectedTable ? booking.table_number === selectedTable : true;
     const isHourMatch = (after_time) ? (selectedHour ? parseInt(booking.time.split(":")[0]) > selectedHour : true) : (selectedHour ? parseInt(booking.time.split(":")[0]) == selectedHour : true);
     const isDateMatch = selectedDate ? booking.date.split('T')[0] === selectedDate : true;
     return isTableMatch && isHourMatch && isDateMatch;
-  });
+  }) : [];
 
   const handleDelete = async (index) => {
     const confirmed = window.confirm("Are you sure?");
@@ -72,7 +72,7 @@ function Table() {
 
   const handle_customer_come = async (index) => {
     const confirmed = window.confirm("Are you sure?");
-    if(!confirmed)return ;
+    if (!confirmed) return;
     let entry = filteredBookings[index];
     const generatePincode = () => {
       return Math.floor(10000 + Math.random() * 90000).toString();
@@ -109,10 +109,10 @@ function Table() {
       });
 
       const order = await response.json();
-      console.log(order) ;
+      console.log(order);
       if (response.ok) {
         setOrderDetails(order);
-        setStatus(order.status) ;
+        setStatus(order.status);
       } else {
         console.error(order.message);
       }
@@ -153,8 +153,8 @@ function Table() {
         ))}
       </div>
       <div className="flex justify-center mt-4">
-        <button className="p-2 m-1 bg-blue-500 text-white rounded-md" onClick={()=>{set_after_time(!after_time)}}>
-          {after_time ? <>After</>:<>At</>}
+        <button className="p-2 m-1 bg-blue-500 text-white rounded-md" onClick={() => { set_after_time(!after_time) }}>
+          {after_time ? <>After</> : <>At</>}
         </button>
         {hours.map((hour) => (
           <button
@@ -194,60 +194,59 @@ function Table() {
             </tr>
           </thead>
           <tbody>
-              {filteredBookings.map((booking, index) => {
-                // Calculate current date and time
-                const currentDate = new Date();
-                const bookingDateTime = new Date(`${booking.date.split('T')[0]}T${booking.time}`);
+            {filteredBookings.map((booking, index) => {
+              // Calculate current date and time
+              const currentDate = new Date();
+              const bookingDateTime = new Date(`${booking.date.split('T')[0]}T${booking.time}`);
 
-                // Calculate 1 hour before and after the current date and time
-                const oneHourBefore = new Date(currentDate.getTime() - (1 * 60 * 60 * 1000));
-                const oneHourAfter = new Date(currentDate.getTime() + (1 * 60 * 60 * 1000));
+              // Calculate 1
+              const oneHourBefore = new Date(currentDate.getTime() - (1 * 60 * 60 * 1000));
+              const oneHourAfter = new Date(currentDate.getTime() + (1 * 60 * 60 * 1000));
 
-                // Check if booking date and time is within the 1 hour range
-                const isWithinOneHour = bookingDateTime >= oneHourBefore && bookingDateTime <= oneHourAfter;
+              // Check if booking date and time is within the 1 hour range
+              const isWithinOneHour = bookingDateTime >= oneHourBefore && bookingDateTime <= oneHourAfter;
 
-                return (
-                  <tr key={index} className={`bg-white border-b ${isWithinOneHour ? 'bg-green-100' : ''}`}>
-                    <td className="w-1/7 text-center py-2">{booking.table_number}</td>
-                    <td className="w-1/7 text-center py-2">{booking.pincode}</td>
-                    <td className="w-1/7 text-center py-2">{booking.date.split('T')[0]}</td>
-                    <td className="w-1/7 text-center py-2">{booking.time}</td>
-                    <td className="w-1/7 text-center py-2">{booking.customer_name}</td>
-                    <td className="w-1/7 text-center py-2">{booking.customer_contact}</td>
-                    <td className="w-1/7 text-center py-2">
-                      {booking.order_id && (
+              return (
+                <tr key={index} className={`bg-white border-b ${isWithinOneHour ? 'bg-green-100' : ''}`}>
+                  <td className="w-1/7 text-center py-2">{booking.table_number}</td>
+                  <td className="w-1/7 text-center py-2">{booking.pincode}</td>
+                  <td className="w-1/7 text-center py-2">{booking.date.split('T')[0]}</td>
+                  <td className="w-1/7 text-center py-2">{booking.time}</td>
+                  <td className="w-1/7 text-center py-2">{booking.customer_name}</td>
+                  <td className="w-1/7 text-center py-2">{booking.customer_contact}</td>
+                  <td className="w-1/7 text-center py-2">
+                    {booking.order_id && (
+                      <button
+                        onClick={() => handleOrderClick(booking.order_id)}
+                        className="text-blue-500 underline"
+                      >
+                        {booking.order_id}
+                      </button>
+                    )}
+                  </td>
+                  <td className="w-1/7 text-center py-2">
+                    {!booking.pincode ? (
+                      <>
                         <button
-                          onClick={() => handleOrderClick(booking.order_id)}
-                          className="text-blue-500 underline"
+                          onClick={() => handle_customer_come(index)}
+                          className="p-2 bg-yellow-500 text-white rounded-md mr-2"
                         >
-                          {booking.order_id}
+                          Customer Arrived
                         </button>
-                      )}
-                    </td>
-                    <td className="w-1/7 text-center py-2">
-                      {!booking.pincode ? (
-                        <>
-                          <button
-                            onClick={() => handle_customer_come(index)}
-                            className="p-2 bg-yellow-500 text-white rounded-md mr-2"
-                          >
-                            Customer Arrived
-                          </button>
-                          <button
-                            onClick={() => handleDelete(index)}
-                            className="p-2 bg-red-500 text-white rounded-md"
-                          >
-                            Delete
-                          </button>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-
+                        <button
+                          onClick={() => handleDelete(index)}
+                          className="p-2 bg-red-500 text-white rounded-md"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}
@@ -310,9 +309,8 @@ function Table() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
 
-export default Table ;
+export default Table;

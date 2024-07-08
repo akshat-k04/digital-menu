@@ -35,7 +35,7 @@ const Table_schedule_provider = ({ children }) => {
 
 function sort_and_set(data){
         function sortBookingsByDateTime(bookings) {
-            return bookings.sort((a, b) => {
+            return bookings?.sort((a, b) => {
                 const dateTimeA = new Date(`${a.date.split('T')[0]}T${a.time}`);
                 const dateTimeB = new Date(`${b.date.split('T')[0]}T${b.time}`);
                 return dateTimeB - dateTimeA; // Newest first
