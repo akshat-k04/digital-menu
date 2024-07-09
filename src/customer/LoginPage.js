@@ -1,6 +1,8 @@
 import React, { useState,useContext,useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import { Dishes_context } from "../Context/Dishes_context";
+import { TokenVerificationContext } from "../Context/customer_verification";
+
 const base = "http://localhost:8000";
 
 function LoginPage() {
@@ -8,44 +10,20 @@ function LoginPage() {
   const [pincode, setPinNumber] = useState("");
   const navigate = useNavigate();
   const { get_Dishes } = useContext(Dishes_context);
+  const {checkToken} = useContext(TokenVerificationContext) ;
+
+  const location = useLocation();
+  const path = location.pathname;
+
 
   useEffect(() => {
-    const checkToken = async () => {
-      const token = localStorage.getItem('c_token');
-      if (!token) {
-        // If no token
-        // redirect to login page
-        // window.location.href = '/';
-        console.log("No token");
-      }
-
-      try {
-        const response = await fetch(`${base}/customer/Signin/verify`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'c_token': `Bearer ${token}`
-          },
-        });
-
-        if (!response.ok) {
-          // window.location.href = '/';
-          throw new Error('Token verification failed');
-        }
-
-        // Token is valid, proceed with the component logic
-        const data = await response.json();
-        console.log(data);
-        await get_Dishes();
-        navigate("/order");
-
-      } catch (error) {
-        console.error('Error:', error);
-        // re direct to login page
-      }
+    const handleAutoLogin = async () => {
+      await checkToken(path, navigate);
     };
-    checkToken();
+    handleAutoLogin();
   }, []);
+
+
   const handleLogin = async() => {
     // api for login
     const response = await fetch(`${base}/customer/Signin/`, {

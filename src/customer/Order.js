@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useLocation} from "react-router-dom";
 import { Dishes_context } from "../Context/Dishes_context";
-const base = "http://localhost:8000";
+import { TokenVerificationContext } from "../Context/customer_verification";
+
 
 function Order() {
   const { Dishes_data, get_Dishes } = useContext(Dishes_context);
@@ -12,39 +13,20 @@ function Order() {
   const [current, setCurrent] = useState("");
   const navigate = useNavigate();
 
+
+  const { checkToken } = useContext(TokenVerificationContext);
+
+  const location = useLocation();
+  const path = location.pathname;
+
+
   useEffect(() => {
-    // localStorage.setItem("cart", JSON.stringify("")) ;
-    const checkToken = async () => {
-      const token = localStorage.getItem('c_token');
-      if (!token) {
-        navigate("/login");
-        console.log("No token");
-        return;
-      }
-
-      try {
-        const response = await fetch(`${base}/customer/Signin/verify`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'c_token': `Bearer ${token}`
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Token verification failed');
-        }
-
-        const data = await response.json();
-        await get_Dishes();
-
-      } catch (error) {
-        console.error('Error:', error);
-        navigate("/login");
-      }
+    const handleAutoLogin = async () => {
+      await checkToken(path, navigate);
     };
-    checkToken();
+    handleAutoLogin();
   }, []);
+
 
   useEffect(() => {
     if (Array.isArray(Dishes_data) && Dishes_data.length > 0) {

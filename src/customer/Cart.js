@@ -1,11 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect,useContext } from "react";
+import { useNavigate,useLocation } from "react-router-dom";
 import axios from "axios";
+import { TokenVerificationContext } from "../Context/customer_verification";
+
 const base = "http://localhost:8000";
 
 function Cart() {
   const [info, setInfo] = useState({});
   const navigate = useNavigate();
+  const { checkToken } = useContext(TokenVerificationContext);
+
+  const location = useLocation();
+  const path = location.pathname;
+
+
+  useEffect(() => {
+    const handleAutoLogin = async () => {
+      await checkToken(path, navigate);
+    };
+    handleAutoLogin();
+  }, []);
+
+
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
     // console.log(JSON.parse(savedCart));
@@ -16,6 +32,8 @@ function Cart() {
       return [];
     }
   });
+
+
 
   function parseJwt(token) {
     var base64Url = token.split(".")[1];

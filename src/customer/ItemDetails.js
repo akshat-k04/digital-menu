@@ -1,6 +1,9 @@
-import React, { useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+
+
+import React, { useState, useContext ,useEffect} from "react";
+import { useParams, useNavigate ,useLocation} from "react-router-dom";
 import { Dishes_context } from "../Context/Dishes_context";
+import { TokenVerificationContext } from "../Context/customer_verification";
 
 function ItemDetails() {
   const { Dishes_data } = useContext(Dishes_context);
@@ -11,6 +14,18 @@ function ItemDetails() {
   const [spiciness, setSpiciness] = useState("mild");
   const [gravy, setGravy] = useState("normal");
   const [instructions, setInstructions] = useState("");
+  const { checkToken } = useContext(TokenVerificationContext);
+
+  const location = useLocation();
+  const path = location.pathname;
+
+
+  useEffect(() => {
+    const handleAutoLogin = async () => {
+      await checkToken(path, navigate);
+    };
+    handleAutoLogin();
+  }, []);
 
   const handleAddToCart = () => {
     const cartItem = {
