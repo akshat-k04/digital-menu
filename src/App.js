@@ -23,6 +23,7 @@ function App() {
             <TokenVerificationProvider>
               <Router>
                 <div className="App">
+                  <button onClick={() => { localStorage.removeItem('c_token'); localStorage.removeItem('token'); localStorage.removeItem('cart'); window.location.href = '/login'; }}>logout</button>
                   <Routes>
                     <Route path="/" element={<Admin_login />} />
                     <Route path="/dashboard" element={<Dashboard />} />

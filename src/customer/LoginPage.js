@@ -9,7 +9,7 @@ function LoginPage() {
   const [table, setTableNumber] = useState("");
   const [pincode, setPinNumber] = useState("");
   const navigate = useNavigate();
-  const { get_Dishes } = useContext(Dishes_context);
+  const { get_Dishes} = useContext(Dishes_context);
   const {checkToken} = useContext(TokenVerificationContext) ;
 
   const location = useLocation();
@@ -44,6 +44,7 @@ function LoginPage() {
       localStorage.setItem('c_token', data.token);
       // add use context here and save it globally
       // redirect to new page
+      // await set_cart(data.order_id) ;
       await get_Dishes();
       navigate("/order");
     }

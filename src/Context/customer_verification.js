@@ -5,7 +5,7 @@ const base = "http://localhost:8000";
 const TokenVerificationContext = createContext();
 
 const TokenVerificationProvider = ({ children }) => {
-    const { get_Dishes } = useContext(Dishes_context);
+    const { get_Dishes ,set_cart} = useContext(Dishes_context);
     
 
 
@@ -32,6 +32,8 @@ const TokenVerificationProvider = ({ children }) => {
                 }
 
                 const data = await response.json();
+                // console.log(data) ;
+                // await set_cart(data.user.order_id);
                 await get_Dishes();
                 if (path === '/login') navigate("/order");
             } catch (error) {

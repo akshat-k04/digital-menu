@@ -85,8 +85,8 @@ async function update_order(req, res) {
 }
 async function find_order(req, res) {
     try {
-        await OrderModel.findOne({ order_id: req.body.order_id }, req.body);
-        res.send({ 'message': 'done' });
+        data = await OrderModel.findOne({ order_id: req.body.order_id });
+        res.send({ 'message': data });
     } catch (err) {
         res.status(500).send({ 'message': `${err}` });
     }
