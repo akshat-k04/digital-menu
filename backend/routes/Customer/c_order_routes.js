@@ -19,7 +19,7 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-OrderRouter.update('/update', verifyToken, update_order); // used by owner to complete the order if the user did't tap on complete order
+OrderRouter.post('/update', verifyToken, update_order); // used by owner to complete the order if the user did't tap on complete order
 OrderRouter.post('/find', find_order);
 
 function checkQuantityReduction(prev_order, updated_order) {
@@ -30,20 +30,28 @@ function checkQuantityReduction(prev_order, updated_order) {
         return updatedItem && updatedItem.quantity >= prevItem.quantity;
     });
 
-    let difference = [];
-    for (let pi = 0; pi < prev_order.length; pi++) {
-        for (let i = 0; i < updated_order.length; i++) {
+    let differenceItems = [];
+    for (let i = 0; i < updated_order.length; i++) {
+        let found = false;
+        for (let pi = 0; pi < prev_order.length; pi++) {
             if (prev_order[pi].menuItem == updated_order[i].menuItem) {
-                let tempDiff = updated_order[i];
-                
-                tempDiff.quantity = updated_order[i].quantity - prev_order[pi].quantity ;
-                if (tempDiff.quantity >0) difference.push(tempDiff);
+                found = true;
+                let tempDiff = { ...updated_order[i] };
+                tempDiff.quantity = updated_order[i].quantity - prev_order[pi].quantity;
+                // console.log(tempDiff.quantity) ;
+                if (tempDiff.quantity > 0) {
+                    differenceItems.push(tempDiff);
+                }
                 break; // Once matched, no need to continue with this updated_order item
             }
         }
+        if (!found) {
+            let tempDiff = { ...updated_order[i] };
+            differenceItems.push(tempDiff);
+        }
     }
 
-    return { safe, difference };
+    return { safe, difference: differenceItems };
 }
 
 
@@ -54,7 +62,7 @@ async function update_order(req, res) {
         let {safe, difference} = checkQuantityReduction(prev_order.items, updated_order);
         // console.log(updated_order) ;
         // console.log(prev_order.items) ;
-        console.log(difference) ;
+        console.log(safe) ;
         if(safe){
             await OrderModel.findOneAndUpdate({ order_id: req.user.order_id }, req.body);
             // send the difference to the queue , for table number check req.user.table

@@ -39,7 +39,7 @@ function Employee() {
             <thead>
               <tr>
                 <th className="w-1/4 text-center">Username</th>
-                <th className="w-1/4 text-center">Password</th>
+                {/* <th className="w-1/4 text-center">Password</th> */}
                 <th className="w-1/4 text-center">Is Employee</th>
                 <th className="w-1/4 text-center">Actions</th>
               </tr>
@@ -48,7 +48,7 @@ function Employee() {
               {employee_data.map((detail, index) => (
                 <tr key={index} className="bg-white border-b">
                   <td className="w-1/4 text-center py-2">{detail.username}</td>
-                  <td className="w-1/4 text-center py-2">{detail.password}</td>
+                  {/* <td className="w-1/4 text-center py-2">{detail.password}</td> */}
                   <td className="w-1/4 text-center py-2">{detail.is_employee ? 'Yes' : 'No'}</td>
                   <td className="w-1/4 text-center py-2">
                     <button onClick={() => handleDeleteClick(index)} className="p-2 bg-red-500 text-white rounded-md">

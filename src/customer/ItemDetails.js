@@ -1,23 +1,24 @@
-import React, { useState,useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Dishes_context } from "../Context/Dishes_context";
 
 function ItemDetails() {
   const { Dishes_data } = useContext(Dishes_context);
-
   const { id } = useParams();
-  const dish = Dishes_data.find((d) => d._id == id); 
+  const dish = Dishes_data.find((d) => d._id == id);
   const navigate = useNavigate();
   const [size, setSize] = useState("medium");
   const [spiciness, setSpiciness] = useState("mild");
   const [gravy, setGravy] = useState("normal");
   const [instructions, setInstructions] = useState("");
+
   const handleAddToCart = () => {
     const cartItem = {
       ...dish,
       specialInstructions: "special instructions : " + instructions,
       quantity: 1,
     };
+
     if (spiciness) {
       cartItem.specialInstructions += ", spiciness: " + spiciness;
     }
@@ -25,18 +26,25 @@ function ItemDetails() {
       cartItem.specialInstructions += ", size: " + size;
     }
     if (gravy) {
-      cartItem.specialInstructions += ", size: " + gravy;
+      cartItem.specialInstructions += ", gravy: " + gravy;
     }
     if (size === "small") {
       cartItem.price = cartItem.price / 2;
     } else if (size === "large") {
       cartItem.price = cartItem.price * 2;
     }
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let existingItem = cart.find((item) => item._id == cartItem._id);
-    // console.log(existingItem);
-    if (existingItem) existingItem = existingItem.quantity++ ;
-    else cart.push(cartItem); 
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (!Array.isArray(cart)) {
+      cart = [];
+    }
+
+    const existingItem = cart.find((item) => item._id == cartItem._id);
+    if (existingItem) {
+      existingItem.quantity++;
+    } else {
+      cart.push(cartItem);
+    }
 
     localStorage.setItem("cart", JSON.stringify(cart));
     navigate("/cart");
