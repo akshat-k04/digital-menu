@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useNavigate ,useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Dishes_context } from "../Context/Dishes_context";
 import { TokenVerificationContext } from "../Context/customer_verification";
-
+import banner from "../assets/banner.svg";
 
 function Order() {
   const { Dishes_data, get_Dishes } = useContext(Dishes_context);
@@ -13,12 +13,10 @@ function Order() {
   const [current, setCurrent] = useState("");
   const navigate = useNavigate();
 
-
   const { checkToken } = useContext(TokenVerificationContext);
 
   const location = useLocation();
   const path = location.pathname;
-
 
   useEffect(() => {
     const handleAutoLogin = async () => {
@@ -27,24 +25,23 @@ function Order() {
     handleAutoLogin();
   }, []);
 
-
   useEffect(() => {
     if (Array.isArray(Dishes_data) && Dishes_data.length > 0) {
-      const uniqueCatagories = [...new Set(Dishes_data.map((dish) => dish.catagory))];
+      const uniqueCatagories = [
+        ...new Set(Dishes_data.map((dish) => dish.catagory)),
+      ];
       setCatagories(uniqueCatagories);
       setCurrent(uniqueCatagories[0]);
     }
   }, [Dishes_data]);
 
-
-
   const filteredDishes = Array.isArray(Dishes_data)
     ? Dishes_data.filter((dish) => {
-      return (
-        dish.catagory === current &&
-        dish.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    })
+        return (
+          dish.catagory === current &&
+          dish.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      })
     : [];
 
   const handleItemClick = (id) => {
@@ -53,7 +50,12 @@ function Order() {
 
   return (
     <div className="h-lvh flex flex-col">
-      {!hide && <div className="h-2/6"> img</div>}
+      {!hide && (
+        <div className="h-2/6 flex justify-center items-center">
+          {" "}
+          <img style={{ maxWidth: "100%", height: "100%" }} src={banner} />
+        </div>
+      )}
       <div className="h-1/6">
         <div className="flex justify-between mx-5 items-center">
           <span className="text-4xl font-bold">Menu</span>
@@ -98,7 +100,7 @@ function Order() {
           ))}
         </div>
       </div>
-      <div className="h-1/6 flex justify-center items-center">
+      <div className="h-2/6 flex justify-center items-center">
         <button
           onClick={() => navigate("/cart")}
           className="bg-blue-500 text-white p-2 rounded"
