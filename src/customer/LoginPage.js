@@ -3,7 +3,6 @@ import {useLocation, useNavigate } from "react-router-dom";
 import { Dishes_context } from "../Context/Dishes_context";
 import { TokenVerificationContext } from "../Context/customer_verification";
 
-const base = "http://localhost:8000";
 
 function LoginPage() {
   const [table, setTableNumber] = useState("");
@@ -26,7 +25,7 @@ function LoginPage() {
 
   const handleLogin = async() => {
     // api for login
-    const response = await fetch(`${base}/customer/Signin/`, {
+    const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/customer/Signin/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

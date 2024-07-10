@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-const base = "http://localhost:8000";
+// const process.env.REACT_APP_BASE_BACK = "http://localhost:8000";
 const Employee_context = createContext();
 
 const Employee_provider = ({ children }) => {
@@ -8,7 +8,7 @@ const Employee_provider = ({ children }) => {
 
     const get_employee = async () => {
         try {
-            const response = await fetch(`${base}/admin/employee/`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/employee/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const Employee_provider = ({ children }) => {
     const delete_employee = async (deleted_employee) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/employee/delete`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/employee/delete`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const Employee_provider = ({ children }) => {
     const create_employee = async (employee) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/employee/add`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/employee/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

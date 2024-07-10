@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-const base = "http://localhost:8000";
+// const process.env.REACT_APP_BASE_BACK = "http://localhost:8000";
 
 const Dishes_context = createContext();
 
@@ -8,7 +8,7 @@ const Dishes_provider = ({ children }) => {
 
     const get_Dishes = async () => {
         try {
-            const response = await fetch(`${base}/admin/dishes/`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/dishes/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ const Dishes_provider = ({ children }) => {
     const update_Dishes = async (updated_dish) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/dishes/update`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/dishes/update`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const Dishes_provider = ({ children }) => {
     const delete_Dishes = async (deleted_dish) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/dishes/delete`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/dishes/delete`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const Dishes_provider = ({ children }) => {
     const create_Dish = async (dish) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/dishes/add`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/dishes/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

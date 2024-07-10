@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import CreateTableBooking from "./CreateTableBooking";
 import { Table_schedule_context } from "../Context/Table_schedule_context";
 import { Table_registration_context } from "../Context/Table_registration";
-const base = "http://localhost:8000";
+// const process.env.REACT_APP_BASE_BACK = "http://localhost:8000";
 
 function Table() {
   const { Table_schedule_data, delete_Table_schedule, sort_and_set, update_Table_schedule } = useContext(Table_schedule_context);
@@ -18,7 +18,7 @@ function Table() {
   useEffect(() => {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-process.env.REACT_APP_BASE_BACKd
     const day = String(today.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
     setSelectedDate(formattedDate);
@@ -28,7 +28,7 @@ function Table() {
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`${base}/admin/orders/update`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/orders/update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ function Table() {
 
   const handleOrderClick = async (order_id) => {
     try {
-      const response = await fetch(`${base}/admin/orders/find`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/orders/find`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

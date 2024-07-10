@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { TokenVerificationContext } from "../Context/customer_verification";
 
-const base = "http://localhost:8000";
+// const base = "http://localhost:8000";
 
 function Cart() {
   const [info, setInfo] = useState({});
@@ -128,7 +128,7 @@ function Cart() {
 
     const token = localStorage.getItem("c_token");
     try {
-      const response = await fetch(`${base}/customer/order/update`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/customer/order/update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

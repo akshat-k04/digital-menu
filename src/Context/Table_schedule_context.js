@@ -1,6 +1,6 @@
 import React, { createContext, useState,useContext } from 'react';
 import { Table_registration_context } from './Table_registration';
-const base = "http://localhost:8000";
+// const process.env.REACT_APP_BASE_BACK = "http://localhost:8000";
 
 const Table_schedule_context = createContext();
 
@@ -11,7 +11,7 @@ const Table_schedule_provider = ({ children }) => {
     const get_table_schedule = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/table/`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/table/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ function sort_and_set(data){
         const token = localStorage.getItem('token');
         
         try {
-            const response = await fetch(`${base}/admin/table/update`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/table/update`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ function sort_and_set(data){
     const delete_Table_schedule = async (deleted_schedule) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/table/delete`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/table/delete`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ function sort_and_set(data){
     const create_Table_schedule = async (schedule) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/table/add`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/table/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

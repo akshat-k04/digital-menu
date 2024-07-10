@@ -11,7 +11,6 @@ import Cart from "./Customer/Cart.js";
 import LoginPage from "./Customer/LoginPage.js";
 import ItemDetails from "./Customer/ItemDetails.js";
 import { TokenVerificationProvider } from "./Context/customer_verification.js";
-const base = "http://localhost:8000";
 
 function App() {
   return (

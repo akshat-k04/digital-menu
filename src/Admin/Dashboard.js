@@ -9,7 +9,7 @@ import { Table_schedule_context } from "../Context/Table_schedule_context";
 import { Employee_context } from "../Context/employee_context";
 import { Table_registration_context } from "../Context/Table_registration";
 import Orders from "./Orders";
-const base = "http://localhost:8000";
+// const process.env.REACT_APP_BASE_BACK = "http://localhost:8000";
 
 export default function Dashboard({ checkToken }) {
   const [mode, setMode] = useState("tableregistration");
@@ -28,7 +28,7 @@ export default function Dashboard({ checkToken }) {
       }
 
       try {
-        const response = await fetch(`${base}/admin/employee/verifyToken`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/employee/verifyToken`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-const base = "http://localhost:8000";
+// const process.env.REACT_APP_BASE_BACK = "http://localhost:8000";
 
 const Table_registration_context = createContext();
 
@@ -9,7 +9,7 @@ const Table_registration_provider = ({ children }) => {
     const get_Table_registration = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/tableRegistration/`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/tableRegistration/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ const Table_registration_provider = ({ children }) => {
     const update_Table_registration = async (updated_registration) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/tableRegistration/update`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/tableRegistration/update`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const Table_registration_provider = ({ children }) => {
     const delete_Table_registration = async (deleted_registration) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/tableRegistration/delete`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/tableRegistration/delete`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const Table_registration_provider = ({ children }) => {
     const create_Table_registration = async (registration) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${base}/admin/tableRegistration/add`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/admin/tableRegistration/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

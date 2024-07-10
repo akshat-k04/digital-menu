@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import "./css/order.css"; // Import the CSS file
 
 // Connect to the /chef namespace
-const socket = io("http://localhost:8000/chef");
+const socket = io(`${process.env.REACT_APP_BASE_BACK}/chef`);
 
 function ChefOrderQueue() {
   const [orders, setOrders] = useState([]);

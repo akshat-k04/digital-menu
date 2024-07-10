@@ -1,6 +1,6 @@
 import {createContext, useContext } from 'react';
 import { Dishes_context } from '../Context/Dishes_context';
-const base = "http://localhost:8000";
+// const process.env.REACT_APP_BASE_BACK = "http://localhost:8000";
 
 const TokenVerificationContext = createContext();
 
@@ -19,7 +19,7 @@ const TokenVerificationProvider = ({ children }) => {
             }
 
             try {
-                const response = await fetch(`${base}/customer/Signin/verify`, {
+                const response = await fetch(`${process.env.REACT_APP_BASE_BACK}/customer/Signin/verify`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
