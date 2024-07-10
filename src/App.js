@@ -15,7 +15,6 @@ const base = "http://localhost:8000";
 
 function App() {
   return (
-    
     <Dishes_provider>
       <Table_registration_provider>
         <Table_schedule_provider>
@@ -23,7 +22,18 @@ function App() {
             <TokenVerificationProvider>
               <Router>
                 <div className="App">
-                  <button onClick={() => { localStorage.removeItem('c_token'); localStorage.removeItem('token'); localStorage.removeItem('cart'); window.location.href = '/login'; }}>logout</button>
+                  <button
+                    className="p-2 my-2 bg-blue-600 rounded-md text-lg text-white"
+                    onClick={() => {
+                      localStorage.removeItem("c_token");
+                      localStorage.removeItem("token");
+                      localStorage.removeItem("cart");
+                      window.location.href = "/login";
+                      localStorage.removeItem("doneOrders");
+                    }}
+                  >
+                    logout
+                  </button>
                   <Routes>
                     <Route path="/" element={<Admin_login />} />
                     <Route path="/dashboard" element={<Dashboard />} />
