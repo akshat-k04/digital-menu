@@ -9,13 +9,24 @@ const bodyParser = require("body-parser");
 const Admin = require("./routes/Admin/base");
 const CustomerRouter = require("./routes/Customer/cust_base");
 const subOrder_model = require("./models/sub_order.js");
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Put all your API routes here
+
+// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000", // React app URL
+    origin: process.env.REACT_APP_BASE_FRONT, // React app URL
     methods: ["GET", "POST", "UPDATE","DELETE"],
   },
 });
